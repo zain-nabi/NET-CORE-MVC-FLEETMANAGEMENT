@@ -1,0 +1,688 @@
+﻿@model Triton.Service.Model.TritonFleetManagement.Custom.CustomerModel
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameRole = "Admin Manager";
+}
+
+<main id="content" role="main" class="main">
+    <!-- Breadcrumb Section -->
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Fleet Management" }, { "HeadingSubTittle", "Customer" }, { "HeadingSubDetails", "Create" }, { "hrefLink", Url.Action("Index", "Customer") },{ "usernameRole", @usernameRole } }' />
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <ul id="validationFormProgress" class="js-step-progress step step-sm step-icon-sm step-inline step-item-between mb-7">
+            <li class="step-item">
+                <a class="step-content-wrapper" href="javascript:;"
+                   data-hs-step-form-next-options='{
+                                                     "targetSelector": "#validationFormAccount"
+                                                   }'>
+                    <span class="step-icon step-icon-soft-dark">1</span>
+                    <div class="step-content">
+                        <span class="step-title">Information</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="step-item">
+                <a class="step-content-wrapper" href="javascript:;"
+                   data-hs-step-form-next-options='{
+                                               "targetSelector": "#validationFormProfile"
+                                             }'>
+                    <span class="step-icon step-icon-soft-dark">2</span>
+                    <div class="step-content">
+                        <span class="step-title">Address</span>
+                    </div>
+                </a>
+            </li>
+            <li class="step-item">
+                <a class="step-content-wrapper" href="javascript:;"
+                   data-hs-step-form-next-options='{
+                                               "targetSelector": "#validationFormContactTypes"
+                                             }'>
+                    <span class="step-icon step-icon-soft-dark">3</span>
+                    <div class="step-content">
+                        <span class="step-title">Contact</span>
+                    </div>
+                </a>
+            </li>
+            <li class="step-item">
+                <a class="step-content-wrapper" href="javascript:;"
+                   data-hs-step-form-next-options='{
+                                                   "targetSelector": "#validationFormAddress"
+                                                 }'>
+                    <span class="step-icon step-icon-soft-dark">4</span>
+                    <div class="step-content">
+                        <span class="step-title">Save</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+
+            <div class="col-lg-12">
+                <!-- Card -->
+                <div>
+                    <div class="card">
+                        <!-- Body -->
+                        <div class="card-body">
+                            @if (Model.ErrorMessage != null)
+                            {
+                                <div class="alert alert-soft-danger alert-dismissible fade show" role="alert">
+                                    <strong>@Model.ErrorMessage</strong>
+
+                                </div>
+                            }
+                            <!-- Step Form -->
+                            <form method="post" id="addForm" class="js-step-form js-validate" enctype="multipart/form-data"
+                                  data-hs-step-form-options='{
+                                              "progressSelector": "#validationFormProgress",
+                                              "stepsSelector": "#validationFormContent",
+                                              "endSelector": "#validationFormFinishBtn",
+                                              "isValidate": true
+                                            }'>
+                                <!-- Step -->
+                                <!-- End Step -->
+                                <!-- Content Step Form -->
+                                <div id="validationFormContent">
+
+                                    <div id="validationFormAccount" class="active">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Customer Name</label>
+
+                                                    <input id="customerNameTextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Customer Name." placeholder="Customer Name" aria-label="Current Value" asp-for="@Model.Customer.Name">
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Company Registration</label>
+                                                    <input id="CompanyRegistrationTextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Company Registration." placeholder="Company Registration" aria-label="Current Value" value="@Model.Customer.CompanyRegistration" asp-for="@Model.Customer.CompanyRegistration">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+
+                                        </div>
+                                        <!-- End Form Group -->
+                                        <!-- Form Group -->
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message mb-3">
+                                                    <label class="input-label">Credit Limit</label>
+                                                    <input id="CreditLimitTextBox" type="number" class="form-control stringValidation" required
+                                                           data-msg="Please enter Credit Limit." placeholder="Credit Limit" aria-label="Current Value" value="@Model.Customer.CreditLimit" asp-for="@Model.Customer.CreditLimit">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Vat Registration</label>
+                                                    <input id="VatRegistrationNumberTextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Vat Registration Number." placeholder="Vat Registration" aria-label="Current Value" value="@Model.Customer.VatRegistration" asp-for="@Model.Customer.VatRegistration">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                        </div>
+
+                                        <!-- Form Group -->
+                                        <div class="row">
+
+
+
+
+                                        </div>
+                                        <div class="row">
+
+
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message mb-3">
+                                                    <label class="input-label">Loyality Spend</label>
+                                                    <input id="LoyalitySpendTextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Loyality Spend." placeholder="Loyality Spend" aria-label="Current Value" value="@Model.Customer.LoyaltySpend" asp-for="@Model.Customer.LoyaltySpend">
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <!-- End Form Group -->
+                                        <!-- Footer -->
+                                        <div class="d-flex align-items-center">
+                                            <div class="ml-auto">
+                                                <button type="button" class="btn btn-primary"
+                                                        data-hs-step-form-next-options='{
+                                                           "targetSelector": "#validationFormProfile"
+                                                         }'>
+                                                    Next <i class="tio-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- End Footer -->
+                                    </div>
+
+                                    <div id="validationFormProfile" style="display: none;">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Physical Address 1</label>
+                                                    <input id="PhysicalAddress1TextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Physical Address1." placeholder="Physical Address1" aria-label="Current Value" value="@Model.Customer.PhysicalAddress1" asp-for="@Model.Customer.PhysicalAddress1">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Physical Address 2</label>
+                                                    <input id="PhysicalAddress2TextBox" type="text" class="form-control stringValidation"
+                                                           data-msg="Please enter Physical Address2." placeholder="Physical Address2" aria-label="Current Value" value="@Model.Customer.PhysicalAddress2" asp-for="@Model.Customer.PhysicalAddress2">
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Physical Suburb</label>
+                                                    <input id="PhysicalSuburbTextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Physical Suburb." placeholder="Physical Suburb" aria-label="Current Value" value="@Model.Customer.PhysicalSuburb" asp-for="@Model.Customer.PhysicalSuburb">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Physical Postal Code</label>
+                                                    <input id="PhysicalPostalCodeTextBox" type="number" class="form-control stringValidation" required
+                                                           data-msg="Please enter Physical Postal Code." placeholder="Physical Postal Code" aria-label="Current Value" value="@Model.Customer.PhysicalPostalCode" asp-for="@Model.Customer.PhysicalPostalCode">
+
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Postal Address 1</label>
+                                                    <input id="PostalAddress1TextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Postal Address1." placeholder="Postal Address1" aria-label="Current Value" value="@Model.Customer.PostalAddress1" asp-for="@Model.Customer.PostalAddress1">
+
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Postal Address 2</label>
+                                                    <input id="PostalAddress2TextBox" type="text" class="form-control stringValidation"
+                                                           data-msg="Please enter Postal Address2." placeholder="Postal Address2" aria-label="Current Value" value="@Model.Customer.PostalAddress2" asp-for="@Model.Customer.PostalAddress2">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Postal Suburb</label>
+                                                    <input id="PostalSuburbTextBox" type="text" class="form-control stringValidation" required
+                                                           data-msg="Please enter Postal Suburb." placeholder="Postal Suburb" aria-label="Current Value" value="@Model.Customer.PostalSuburb" asp-for="@Model.Customer.PostalSuburb">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Postal Code</label>
+                                                    <input id="PostalCodeTextBox" type="number" class="form-control stringValidation" required
+                                                           data-msg="Please enter Postal Code." placeholder="Postal Code" aria-label="Current Value" value="@Model.Customer.PostalCode" asp-for="@Model.Customer.PostalCode">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <!-- Footer -->
+                                        <div class="d-flex align-items-center">
+                                            <button type="button" class="btn btn-ghost-secondary mr-2"
+                                                    data-hs-step-form-prev-options='{
+                                                       "targetSelector": "#validationFormAccount"
+                                                     }'>
+                                                <i class="tio-chevron-left"></i> Previous step
+                                            </button>
+
+
+
+
+
+                                            <div class="ml-auto">
+                                                <div class="row">
+                                                    <!-- Checkbox -->
+                                                    <div class="custom-control custom-checkbox-switch mr-2">
+                                                        <input type="checkbox" id="chkPhysicalToPostal" class="custom-control-input custom-checkbox-switch-input" onchange="CopyPhysicalToPostalAdd()">
+                                                        <label class="custom-checkbox-switch-label btn" for="chkPhysicalToPostal">
+                                                            <span class="custom-checkbox-switch-default">
+                                                                <i class="fal fa-map-marker-alt mr-1"></i> Copy Address
+                                                            </span>
+                                                            <span class="custom-checkbox-switch-active">
+                                                                <i class="tio-done mr-1"></i> Clear Address
+                                                            </span>
+                                                        </label>
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-primary"
+                                                            data-hs-step-form-next-options='{
+                                                        "targetSelector": "#validationFormContactTypes"
+                                                      }'>
+                                                        Next <i class="tio-chevron-right"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Footer -->
+                                    </div>
+
+                                    <div id="validationFormContactTypes" style="display: none;">
+                                        @{
+                                            int countContactTypes = 0;
+                                            bool IsContactTypeSet = true;
+                                        }
+                                        @for (int i = 0; i < Model.ContactTypeDetails.Count; i++)
+                                        {
+                                            var contactTypeLCID = $"{Model.ContactTypeDetails[i].LookUpCodeID}";
+
+                                            if (countContactTypes == i)
+                                            {
+
+                                                <div class="card-header h5">@Model.ContactTypeDetails[i].Name</div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Full Name</label>
+                                                                <input id="NameManagementTextBox" type="text" class="form-control" maxlength="50"
+                                                                       placeholder="Full Name" aria-label="Current Value" value="@Model.ContactTypes.NameManagement" asp-for="@Model.ContactTypes.NameManagement">
+
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Email Address</label>
+                                                                <input id="EmailManagementTextBox" type="email" class="form-control" maxlength="250"
+                                                                       placeholder="Email Address" aria-label="Current Value" value="@Model.ContactTypes.EmailManagement" asp-for="@Model.ContactTypes.EmailManagement">
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Telephone Number</label>
+
+                                                                <input id="TelephoneNumberManagementTextBox" type="number" class="form-control stringValidation" maxlength="10"
+                                                                       data-msg="Please enter Telephone Number." placeholder="Telephone Number" aria-label="Current Value" value="@Model.ContactTypes.TelephoneNumberManagement" asp-for="@Model.ContactTypes.TelephoneNumberManagement">
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                            }
+                                            else if (countContactTypes < i && IsContactTypeSet)
+                                            {
+                                                countContactTypes = countContactTypes + i;
+                                                IsContactTypeSet = false;
+
+                                                <div class="card-header h5">@Model.ContactTypeDetails[i].Name</div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Full Name</label>
+                                                                <input id="NameOperationsTextBox" type="text" class="form-control" maxlength="50"
+                                                                       placeholder="Full Name" aria-label="Current Value" value="@Model.ContactTypes.NameOperations" asp-for="@Model.ContactTypes.NameOperations">
+
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Email Address</label>
+                                                                <input id="EmailOperationsTextBox" type="email" class="form-control" maxlength="250"
+                                                                       placeholder="Email Address" aria-label="Current Value" value="@Model.ContactTypes.EmailOperations" asp-for="@Model.ContactTypes.EmailOperations">
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Telephone Number</label>
+
+                                                                <input id="TelephoneNumberOperationsTextBox" type="number" class="form-control stringValidation" maxlength="10"
+                                                                       data-msg="Please enter Telephone Number" placeholder="Telephone Number" aria-label="Current Value" value="@Model.ContactTypes.TelephoneNumberOperations" asp-for="@Model.ContactTypes.TelephoneNumberOperations">
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                            }
+                                            else if (!IsContactTypeSet)
+                                            {
+
+                                                <div class="card-header h5">@Model.ContactTypeDetails[i].Name</div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Full Name</label>
+                                                                <input id="NameAccountsTextBox" type="text" class="form-control" maxlength="50"
+                                                                       placeholder="Full Name" aria-label="Current Value" value="@Model.ContactTypes.NameAccounts" asp-for="@Model.ContactTypes.NameAccounts">
+
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Email Address</label>
+                                                                <input id="EmailAccountsTextBox" type="email" class="form-control" maxlength="250"
+                                                                       placeholder="Email Address" aria-label="Current Value" value="@Model.ContactTypes.EmailAccounts" asp-for="@Model.ContactTypes.EmailAccounts">
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <!-- Form Group -->
+                                                            <div class="form-group js-form-message">
+                                                                <label class="input-label">Telephone Number</label>
+
+                                                                <input id="TelephoneNumberAccountsTextBox" type="number" class="form-control stringValidation" maxlength="10"
+                                                                       data-msg="Please enter Telephone Number" placeholder="Please enter Telephone Number" aria-label="Current Value" value="@Model.ContactTypes.TelephoneNumberAccounts" asp-for="@Model.ContactTypes.TelephoneNumberAccounts">
+                                                            </div>
+                                                            <!-- End Form Group -->
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                countContactTypes++;
+                                            }
+
+
+
+                                        }
+                                        <div class="ml-auto">
+
+                                            <!-- Footer -->
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" class="btn btn-ghost-secondary mr-2"
+                                                        data-hs-step-form-prev-options='{
+                                                       "targetSelector": "#validationFormProfile"
+                                                     }'>
+                                                    <i class="tio-chevron-left"></i> Previous step
+                                                </button>
+
+
+
+
+
+                                                <div class="ml-auto">
+                                                    <div class="row">
+
+                                                        <button type="button" class="btn btn-primary"
+                                                                data-hs-step-form-next-options='{
+                                                        "targetSelector": "#validationFormAddress"
+                                                      }'>
+                                                            Next <i class="tio-chevron-right"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Footer -->
+
+                                        </div>
+                                    </div>
+                                    <div id="validationFormAddress" style="display: none;">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Account Status Type</label>
+                                                    <div>
+                                                        @Html.DropDownListFor(m => m.Customer.AccountStatusTypeLCID, new SelectList(Model.AccountStatusType, "LookUpCodeID", "Name"), new { id = "AccountStatusType", @class = "js-select2-custom" })
+                                                    </div>
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Customer Types</label>
+                                                    <div>
+                                                        <div class="js-form-message">
+                                                            @Html.DropDownListFor(m => m.Customer.CustomerTypeLCID, new SelectList(Model.CategoryType, "LookUpCodeID", "Name"), new { id = "CategoryType", @class = "js-select2-custom" })
+                                                        </div>
+                                                    </div>
+                                                    <!-- End Form Group -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Loyality Types</label>
+                                                    <div>
+                                                        @Html.DropDownListFor(m => m.Customer.LoyaltyStatusLCID, new SelectList(Model.LoyaltyStatus, "LookUpCodeID", "Name"), new { id = "LoyaltyStatus", @class = "js-select2-custom" })
+                                                    </div>
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Company</label>
+                                                    <div>
+                                                        <div class="js-form-message">
+                                                            @Html.DropDownListFor(m => m.Customer.CompanyID, new SelectList(Model.CompanyModel, "CompanyID", "ShortCompanyName"), new { @id = "Company", @class = "js-select2-custom", @onchange = "javascript:onChangeCompany()" })
+                                                        </div>
+                                                    </div>
+                                                    <!-- End Form Group -->
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Vendor code - TTM</label>
+                                                    <input id="VendorCodeTTMTextBox" type="text" class="form-control stringValidation" maxlength="10"
+                                                           data-msg="Please enter Vendor Code TTM." placeholder="Vendor Code TTM" aria-label="Current" asp-for="@Model.VendorCodeModel.VendorCodeTTM">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Vendor code - TFM</label>
+                                                    <input id="VendorCodeTFMTextBox" type="text" class="form-control stringValidation" maxlength="10"
+                                                           data-msg="Please enter Vendor Code TFM." placeholder="Vendor Code TFM" aria-label="Current Value" asp-for="@Model.VendorCodeModel.VendorCodeTFM">
+
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                        </div>
+
+                                        <hr />
+                                        <!-- End Form Group -->
+                                        <!-- Footer -->
+                                        <div class="d-sm-flex align-items-center">
+                                            <button type="button" class="btn btn-ghost-secondary mb-3 mb-sm-0 mr-2"
+                                                    data-hs-step-form-prev-options='{
+                                                             "targetSelector": "#validationFormContactTypes"
+                                                           }'>
+                                                <i class="tio-chevron-left"></i> Previous step
+                                            </button>
+
+                                            <div class="d-flex justify-content-end ml-auto">
+                                                <a class="btn btn-white" href="@Url.Action("GetAllCustomers", "Customer")">Cancel</a>
+                                                <span class="mx-2"></span>
+                                                @*<button id="submit" type="submit" class="btn btn-primary">Save Changes</button>*@
+                                                <input id="submit" type="submit" class="btn btn-primary" value="save" />
+                                            </div>
+                                        </div>
+                                        <!-- End Footer -->
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <!-- End Card -->
+                    </div>
+
+
+                    <!-- End Card -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End Row -->
+    </div>
+    <!-- End Row -->
+    <!-- End Content Section -->
+</main>
+@section scripts {
+    <!-- JS Implementing Plugins -->
+    <script src="~/front-dashboard-v1.1/dist/assets/vendor/hs-step-form/dist/hs-step-form.min.js"></script>
+    <script src="~/front-dashboard-v1.1/dist/assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <!-- JS Front -->
+    <script src="~/front-dashboard-v1.1/src/assets/js/hs.validation.js"></script>
+
+    <script>
+        $(document).on('ready', function () {
+
+
+            // INITIALIZATION OF FORM VALIDATION
+            // =======================================================
+            $('.js-validate').each(function () {
+                $.HSCore.components.HSValidation.init($(this));
+            });
+
+            // INITIALIZATION OF STEP FORM
+            // =======================================================
+            $('.js-step-form').each(function () {
+                var stepForm = new HSStepForm($(this), {
+                    finish: function () {
+                        $("#validationFormProgress").hide();
+                        $("#validationFormContent").hide();
+                        $("#validationFormSuccessMessage").show();
+                    }
+                }).init();
+            });
+
+            onChangeCompany();
+        });
+
+        function onChangeCompany() {
+            var selectText = $("#Company option:selected").text();
+            selectedTextBoxToShow(selectText);
+        }
+
+        function selectedTextBoxToShow(selectValue) {
+            if (selectValue == 'ALL') {
+                $("#VendorCodeTTMTextBox").prop("disabled", false).attr("required", true);
+                $("#VendorCodeTFMTextBox").prop("disabled", false).attr("required", true);
+
+            }
+            else if (selectValue == 'TTM') {
+
+                $('#VendorCodeTFMTextBox').removeClass("form-control stringValidation is-invalid").addClass("form-control stringValidation");
+                $("#VendorCodeTFMTextBox").val('');
+                $('#VendorCodeTFMTextBox').removeAttr('required');
+                $("#VendorCodeTTMTextBox").prop("disabled", false);
+                $("#VendorCodeTFMTextBox").prop("disabled", true);
+                $("#VendorCodeTTMTextBox").prop("disabled", false).attr("required", true);
+
+            }
+            else if (selectValue == 'TFM') {
+
+                $('#VendorCodeTTMTextBox').removeClass("form-control stringValidation is-invalid").addClass("form-control stringValidation");
+                $("#VendorCodeTTMTextBox").val('');
+                $('#VendorCodeTTMTextBox').removeAttr('required');
+                $("#VendorCodeTTMTextBox").prop("disabled", true);
+                $("#VendorCodeTFMTextBox").prop("disabled", false).attr("required", true);;
+
+            }
+
+        }
+
+        function CopyPhysicalToPostalAdd() {
+            if ($('#chkPhysicalToPostal').is(':checked')) {
+                $("#PostalAddress1TextBox").val($("#PhysicalAddress1TextBox").val()).addClass(".form-control stringValidation is-valid").removeClass(".form-control stringValidation is-invalid");
+                $("#PostalSuburbTextBox").val($("#PhysicalSuburbTextBox").val()).addClass(".form-control stringValidation is-valid").removeClass(".form-control stringValidation is-invalid");
+                $("#PostalCodeTextBox").val($("#PhysicalPostalCodeTextBox").val()).addClass(".form-control stringValidation is-valid").removeClass(".form-control stringValidation is-invalid");
+                $("#PostalAddress2TextBox").val($("#PhysicalAddress2TextBox").val()).addClass(".form-control stringValidation is-valid").removeClass(".form-control stringValidation is-invalid");
+
+            }
+            else {
+                $("#PostalAddress1TextBox").val('').addClass(".form-control stringValidation").removeClass(".form-control stringValidation is-valid");
+                $("#PostalSuburbTextBox").val('').addClass(".form-control stringValidation").removeClass(".form-control stringValidation is-valid");
+                $("#PostalCodeTextBox").val('').addClass(".form-control stringValidation").removeClass(".form-control stringValidation is-valid");
+                $("#PostalAddress2TextBox").val('').addClass(".form-control stringValidation").removeClass(".form-control stringValidation is-valid");
+
+            }
+
+        }
+    </script>
+
+}

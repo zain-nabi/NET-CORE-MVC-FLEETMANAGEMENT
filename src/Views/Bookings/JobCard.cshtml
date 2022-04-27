@@ -1,0 +1,1560 @@
+﻿@model Triton.FleetManagement.Web.Models.BookingsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameRole = "Service Advisor";
+
+    int counter = 0;
+
+    int labourCounter = 0;
+
+    int consumableCounter = 0;
+
+    int tyreCounter = 0;
+
+    var required = string.Empty;
+    var selected = string.Empty;
+}
+
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Administration" }, { "HeadingSubTittle", "Booking Form" }, { "HeadingSubDetails", "Modify" },{ "usernameRole", @usernameRole } , { "hrefLink", Url.Action("EditJobCard", "Bookings", new { BookingsID = Model.BookingID, VehicleID = Model.VehicleID}) }}' />
+</main>
+
+
+@if (Model.JobCardBookingsModel.PartReasonsList == null && Model.JobCardBookingsModel.LabourReasonList == null && Model.JobCardBookingsModel.ConsumableReasonList == null && Model.JobCardBookingsModel.TyreReasonList == null && Model.JobCardBookingsModel.OutworksCommission == null)
+{
+    <main id="content" role="main" class="main">
+        <div class="content container-fluid my-n9">
+            <form class="js-validate" id="form1" method="post" asp-action="JobCard" asp-controller="Bookings">
+                <div class="footer sticky" style="z-index: 99;">
+                    <div style="border: none; ">
+                        <a style="float:right" class="btn btn-white" href="@Url.Action("GetAllBookings", "Bookings")">Cancel</a>
+                        <input style="float:right" type="submit" value="Save" class="btn btn-primary mr-2" id="btnSave" />
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Customer</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.CustomerName" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Registration</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.RegistrationNumber" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Order No.</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.OrderNumber" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Mileage</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.MileAge" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Booking Reasons</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.BookingReasonsPerJobCard.BookingReasons" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #F3F4F6;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xs-2 col-md-2 col-lg-2">
+                                <h4>Part and Booking Reason</h4>
+                            </div>
+
+                            <div class="col-xs-10 col-md-10 col-lg-10">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Parts
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="PartBookingReasons" placeholder="Parts">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblDimensions" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>Line No</th>
+                                                                <th>Part Number</th>
+                                                                <th>Part Description</th>
+                                                                <th>Issued</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th>Note</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mt-5">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Labour
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="LabourBookingReasons" placeholder="Labour">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblLabour" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>Line No</th>
+                                                                <th>Labour Code</th>
+                                                                <th>Hours</th>
+                                                                <th>Rate</th>
+                                                                <th>Selling Price</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mt-5">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Consumables
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="ConsumableBookingReasons" placeholder="Consumables">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblConsumables" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>Line No</th>
+                                                                <th>Consumable Code</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mt-5">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Tyres
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="TyreBookingReasons" placeholder="Tyres">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblTyres" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>Line No</th>
+                                                                <th>Description</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-5">
+                        <div class="row">
+                            <div class="col-lg-2 mb-3 mb-lg-0">
+                                <h4>Outworks Commission</h4>
+                            </div>
+
+                            <div class="col-lg-10">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <!-- Form Group -->
+                                                <div class="form-group">
+                                                    <label class="input-label">Outworks Commission</label>
+                                                    <div class="form-control">
+                                                        <label class="checkbox-inline mb-5">
+                                                            <input id="customAuthorisationOutworks" type="checkbox" asp-for="BookingsModel.OutworksCommission.IsOutworksCommission">   Outworks Commission
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <!-- End Form Group -->
+                                            </div>
+                                            <div class="col-sm-6 SellingPricePanel">
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Supplier Description</label>
+                                                    <input id="SupplierDescTextBox" type="text" class="form-control" required
+                                                           data-msg="Please enter a supplier description" placeholder="Supplier Description" asp-for="BookingsModel.OutworksCommission.SupplierDescription" aria-label="Current Value">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row supplierPOpanel">
+                                            <div class="col-sm-6">
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">PO Number</label>
+                                                    <input id="POTextBox" type="text" class="form-control" required
+                                                           data-msg="Please enter a purchase order number" placeholder="PO Number" asp-for="BookingsModel.OutworksCommission.PONumber" aria-label="Current Value">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Quantity</label>
+                                                    <input id="QtyTextBox" type="number" class="form-control" required value="1" readonly
+                                                           data-msg="Please enter a quantity" placeholder="Quantity" asp-for="BookingsModel.OutworksCommission.Quantity" aria-label="Current Value">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row QtyIssuedPanel">
+                                            <div class="col-sm-6">
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Issued</label>
+                                                    <div class="form-control">
+                                                        <label class="checkbox-inline mb-5">
+                                                            <input id="IssuedTextbox" type="checkbox" asp-for="BookingsModel.OutworksCommission.Isssued">   Issued
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Cost Ex VAT</label>
+                                                    <input id="CEVTextBox" type="text" class="form-control" required
+                                                           data-msg="Please enter a value" placeholder="Cost Ex VAT" asp-for="BookingsModel.OutworksCommission.CostExVAT" aria-label="Current Value" onchange="onChangeCEVT()">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row CostMarkupPanel">
+                                            <div class="col-sm-6">
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Markup</label>
+                                                    <input id="MarkupTextBox" type="text" class="form-control" required
+                                                           data-msg="Please enter a markup" placeholder="Markup" aria-label="Current Value" onchange="onChangeMarkup()">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group js-form-message">
+                                                    <label class="input-label">Selling Price</label>
+                                                    <input id="SellingPriceTextBox" type="text" class="form-control" asp-for="BookingsModel.OutworksCommission.SellingPrice" aria-label="Current Value">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="w-100"></div>
+                                        <!-- End Form -->
+                                        <input type="hidden" id="selectedText" asp-for="@Model.BookingsModel.BookingReasonLCID" />
+                                        <input type="hidden" id="PartReasonSelectedText" asp-for="@Model.BookingsModel.PartReasonLCID" />
+                                        <input type="hidden" id="LabourReasonSelectedText" asp-for="@Model.BookingsModel.LabourReasonLCID" />
+                                        <input type="hidden" id="ConsumablesReasonSelectedText" asp-for="@Model.BookingsModel.ConsumableReasonLCID" />
+                                        <input type="hidden" id="TyresReasonSelectedText" asp-for="@Model.BookingsModel.TyreReasonLCID" />
+                                        @*<input type="hidden" id="SellingPriceSelectedText" asp-for="OutworksCommission.SellingPrice" />*@
+                                        @Html.HiddenFor(model => model.JobCardBookingDetailsByID.BookingsID)
+                                        @Html.HiddenFor(model => model.JobCardBookingDetailsByID.VehicleID)
+                                        @*@Html.HiddenFor(model => model.LookupCodeModel.LookUpCodeID)*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+}
+else
+{
+    <main id="content" role="main" class="main">
+        <div class="content container-fluid my-n9">
+            <form class="js-validate" id="form1" method="post" asp-action="JobCard" asp-controller="Bookings">
+                <div class="footer sticky" style="z-index: 99;">
+                    <div style="border: none; ">
+                        <a style="float:right" class="btn btn-white" href="@Url.Action("GetAllBookings", "Bookings")">Cancel</a>
+                        <input style="float:right" type="submit" value="Save" class="btn btn-primary mr-2" id="btnSave" />
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Customer</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.CustomerName" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Registration</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.RegistrationNumber" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Order No.</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.OrderNumber" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Mileage</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.JobCardBookingDetailsByID.MileAge" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-l-6">
+                                <div class="form-group">
+                                    <label for="withPrependURLLabel" class="input-label"></label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">Booking Reasons</span>
+                                        </div>
+                                        <input type="text" id="withPrependURLLabel" class="form-control" aria-describedby="basic-addon3" value="@Model.BookingReasonsPerJobCard.BookingReasons" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #F3F4F6;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xs-2 col-md-2 col-lg-2">
+                                <h4>Part and Booking Reason</h4>
+                            </div>
+
+                            <div class="col-xs-10 col-md-10 col-lg-10">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Parts
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="PartBookingReasons" placeholder="Parts">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblDimensions" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Line No</th>
+                                                                <th>Part Number</th>
+                                                                <th>Part Description</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th>Note</th>
+                                                                <th>Issued</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        @if (Model.JobCardBookingsModel.PartReasonsList != null)
+                                                        {
+                                                            <tbody>
+                                                                @foreach (var item in Model.JobCardBookingsModel.PartReasonsList)
+                                                                {
+                                                                    counter++;
+                                                                <tr class="rowClass">
+                                                                    <td style="width:2%"><label id="txtLineNo">@counter</label></td>
+                                                                    <td style="width:10%" class="js-form-message formClass"><input type="text" class="form-control formClass" id="@("txtPartNumber"+counter)" name="PartNumber" value="@item.ItemNumber" /></td>
+                                                                    <td style="width:17%" class="js-form-message formClass"><input type="text" class="form-control formClass" id="@("txtDescription"+counter)" name="Description" value="@item.Description" readonly /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input type="number" class="form-control formClass" id="@("txtQty"+counter)" name="Quantity" value="@item.Quantity" required /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input class="form-control formClass numberValidation" type="text" id="@("txtSellingPrice"+counter)" name="SellingPriceExVAT" value="@item.SellingPriceExVAT" required /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input type="text" class="form-control formClass" id="@("txtNote"+counter)" name="Note" value="@item.Note" /></td>
+                                                                    <td style="width:3%" class="js-form-message">
+                                                                        @if (item.Issued == true)
+                                                                        {
+                                                                            <label class="checkbox-inline">
+                                                                                <input id="@("chkIssued"+counter)" class="formClass" type="checkbox" name="Issued" checked="checked">
+                                                                            </label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <label class="checkbox-inline">
+                                                                                <input id="@("chkIssued"+counter)" class="formClass" type="checkbox" name="Issued">
+                                                                            </label>
+                                                                        }
+
+                                                                    </td>
+                                                                    <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                                    <td style="width:1%"><input type="hidden" class="formClass" id="@("txtBookingsID"+counter)" name="BookingsID" value="@item.BookingsID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="formClass" id="@("txtVehicleID"+counter)" name="VehicleID" value="@item.VehicleID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="formClass" id=" @("txtLookUpCodeID"+counter)" name="InventoryID" value="@item.InventoryID" /></td>
+                                                                </tr>
+
+                                                                }
+                                                            </tbody>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tbody>
+                                                            </tbody>
+
+                                                        }
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mt-5">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Labour
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="LabourBookingReasons" placeholder="Labour">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblLabour" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Line No</th>
+                                                                <th>Labour Code</th>
+                                                                <th>Hours</th>
+                                                                <th>Rate</th>
+                                                                <th>Selling Price</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        @if (Model.JobCardBookingsModel.LabourReasonList != null)
+                                                        {
+                                                            <tbody>
+                                                                @foreach (var item in Model.JobCardBookingsModel.LabourReasonList)
+                                                                {
+                                                                    labourCounter++;
+                                                                <tr class="rowClassLabour">
+                                                                    <td style="width:2%"><label id="txtLineNo">@labourCounter</label></td>
+                                                                    <td style="width:10%" class="js-form-message"><input type="text" class="form-control labourClass" id="@("txtLabourCode"+labourCounter)" name="LabourCode" value="@item.Description" /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input class="form-control labourClass numberValidationLabour" id="@("txtLabourHours"+labourCounter)" name="Hours" value="@item.Hours" /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input class="form-control labourClass numberValidationLabour" id="@("txtLabourRate"+labourCounter)" name="Rate" value="@item.Rate" data-msg="Please enter a rate" required /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input class="form-control labourClass numberValidationLabour" id="@("txtLabourSellingPrice"+labourCounter)" name="SellingPriceExVAT" value="@item.SellingPriceExVAT" /></td>
+                                                                    <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                                    <td style="width:1%"><input type="hidden" class="labourClass" id="@("txtLabourBookingsID"+labourCounter)" name="BookingsID" value="@item.BookingsID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="labourClass" id="@("txtLabourVehicleID"+labourCounter)" name="VehicleID" value="@item.VehicleID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="labourClass" id="@("txtLabourLookUpCodeID"+labourCounter)" name="InventoryID" value="@item.InventoryID" /></td>
+                                                                </tr>
+                                                                }
+                                                            </tbody>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tbody></tbody>
+                                                        }
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mt-5">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Consumables
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="ConsumableBookingReasons" placeholder="Consumables">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle h-auto" id="tblConsumables" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Line No</th>
+                                                                <th>Consumable Code</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        @if (Model.JobCardBookingsModel.ConsumableReasonList != null)
+                                                        {
+                                                            <tbody>
+                                                                @foreach (var item in Model.JobCardBookingsModel.ConsumableReasonList)
+                                                                {
+                                                                    consumableCounter++;
+                                                                <tr class="rowClassConsumables">
+                                                                    <td style="width:2%"><label id="txtLineNo">@consumableCounter</label></td>
+                                                                    <td style="width:10%" class="js-form-message formClass"><input type="text" class="form-control consumableClass" id="@("txtDescription" + consumableCounter)" name="Description" value="@item.Description" /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input type="number" class="form-control consumableClass" id="@("txtQuantity" + consumableCounter)" name="Quantity" value="@item.Quantity" required /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input class="form-control consumableClass consumableValidation" id="@("txtSellingPriceExVAT" + consumableCounter)" name="SellingPriceExVAT" value="@item.SellingPriceExVAT" required /></td>
+                                                                    <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                                    <td style="width:1%"><input type="hidden" class="consumableClass" id="@("txtBookingsID" + consumableCounter)" name="BookingsID" value="@item.BookingsID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="consumableClass" id="@("txtVehicleID" + consumableCounter)" name="VehicleID" value="@item.VehicleID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="consumableClass" id="@("txtLookUpCodeID" + consumableCounter)" name="InventoryID" value="@item.InventoryID" /></td>
+                                                                </tr>
+
+                                                                }
+                                                            </tbody>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tbody>
+                                                            </tbody>
+
+                                                        }
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mt-5">
+                                    <div class="card-header">
+                                        <div class="card-header-title">
+                                            Tyres
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <input type="search" class="form-control" id="TyreBookingReasons" placeholder="Tyres">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblTyres" style="width:100%">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Line No</th>
+                                                                <th>Description</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        @if (Model.JobCardBookingsModel.TyreReasonList != null)
+                                                        {
+                                                            <tbody>
+                                                                @foreach (var item in Model.JobCardBookingsModel.TyreReasonList)
+                                                                {
+                                                                    tyreCounter++;
+                                                                <tr class="rowClassTyres">
+                                                                    <td style="width:2%"><label id="txtLineNo">@tyreCounter</label></td>
+                                                                    <td style="width:10%" class="js-form-message formClass"><input type="text" class="form-control tyreClass" id="@("txtTyreDescription" + tyreCounter)" name="Description" value="@item.Description" /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input type="number" class="form-control tyreClass" id="@("txtTyreQty" + tyreCounter)" name="Quantity" value="@item.Quantity" required /></td>
+                                                                    <td style="width:10%" class="js-form-message"><input class="form-control tyreClass tyreValidation" id="@("txtTyreSellingPrice" + tyreCounter)" name="SellingPriceExVAT" value="@item.SellingPriceExVAT" required /></td>
+                                                                    <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                                    <td style="width:1%"><input type="hidden" class="tyreClass" id="@("txtBookingsID" + tyreCounter)" name="BookingsID" value="@item.BookingsID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="tyreClass" id="@("txtVehicleID" + tyreCounter)" name="VehicleID" value="@item.VehicleID" /></td>
+                                                                    <td style="width:1%"><input type="hidden" class="tyreClass" id="@("txtLookUpCodeID" + tyreCounter)" name="InventoryID" value="@item.InventoryID" /></td>
+                                                                </tr>
+                                                                }
+                                                            </tbody>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tbody>
+                                                            </tbody>
+
+                                                        }
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-5">
+                        @if (Model.OutworksCommissionViewModel != null)
+                        {
+                            <div class="row">
+                                <div class="col-lg-2 mb-3 mb-lg-0">
+                                    <h4>Outworks Commission</h4>
+                                </div>
+
+                                <div class="col-lg-10">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <!-- Form Group -->
+                                                    <div class="form-group">
+                                                        <label class="input-label">Outworks Commission</label>
+                                                        <div class="form-control">
+                                                            @if (Model.OutworksCommissionViewModel.IsOutworksCommission == true)
+                                                            {
+                                                                <label class="checkbox-inline mb-5">
+                                                                    <input id="customAuthorisationOutworks" type="checkbox" asp-for="BookingsModel.OutworksCommission.IsOutworksCommission" checked>   Outworks Commission
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="checkbox-inline mb-5">
+                                                                    <input id="customAuthorisationOutworks" type="checkbox" asp-for="BookingsModel.OutworksCommission.IsOutworksCommission">   Outworks Commission
+                                                                </label>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <!-- End Form Group -->
+                                                </div>
+                                                <div class="col-sm-6 SellingPricePanel">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Supplier Description</label>
+                                                        <input id="SupplierDescTextBox" type="text" class="form-control" required
+                                                               data-msg="Please enter a supplier description" placeholder="Supplier Description" asp-for="BookingsModel.OutworksCommission.SupplierDescription" value="@Model.OutworksCommissionViewModel.SupplierDescription" aria-label="Current Value">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row supplierPOpanel">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">PO Number</label>
+                                                        <input id="POTextBox" type="text" class="form-control" required
+                                                               data-msg="Please enter a purchase order number" placeholder="PO Number" asp-for="BookingsModel.OutworksCommission.PONumber" value="@Model.OutworksCommissionViewModel.PONumber" aria-label="Current Value">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Quantity</label>
+                                                        <input id="QtyTextBox" type="number" class="form-control" required
+                                                               data-msg="Please enter a quantity" placeholder="Quantity" asp-for="BookingsModel.OutworksCommission.Quantity" value="@Model.OutworksCommissionViewModel.Quantity" aria-label="Current Value">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row QtyIssuedPanel">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Issued</label>
+                                                        <div class="form-control">
+                                                            @if (Model.OutworksCommissionViewModel.Isssued == true)
+                                                            {
+                                                                <label class="checkbox-inline mb-5">
+                                                                    <input id="IssuedTextbox" type="checkbox" asp-for="BookingsModel.OutworksCommission.Isssued" checked>   Issued
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="checkbox-inline mb-5">
+                                                                    <input id="IssuedTextbox" type="checkbox" asp-for="BookingsModel.OutworksCommission.Isssued">   Issued
+                                                                </label>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Cost Ex VAT</label>
+                                                        <input id="CEVTextBox" class="form-control cCEVT" required
+                                                               data-msg="Please enter a value" placeholder="Cost Ex VAT" asp-for="BookingsModel.OutworksCommission.CostExVAT" value="@Model.OutworksCommissionViewModel.CostExVAT" aria-label="Current Value" onchange="onChangeCEVT()">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row CostMarkupPanel">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Markup</label>
+                                                        <input id="MarkupTextBox" type="text" class="form-control"
+                                                               data-msg="Please enter a markup" placeholder="Markup" aria-label="Current Value" onchange="onChangeMarkup()">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Selling Price</label>
+                                                        <input id="SellingPriceTextBox" type="text" class="form-control" asp-for="BookingsModel.OutworksCommission.SellingPrice" value="@Model.OutworksCommissionViewModel.SellingPrice" aria-label="Current Value">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="w-100"></div>
+                                            <!-- End Form -->
+                                            <input type="hidden" id="selectedText" asp-for="@Model.BookingsModel.BookingReasonLCID" />
+                                            <input type="hidden" id="PartReasonSelectedText" asp-for="@Model.BookingsModel.PartReasonLCID" />
+                                            <input type="hidden" id="LabourReasonSelectedText" asp-for="@Model.BookingsModel.LabourReasonLCID" />
+                                            <input type="hidden" id="ConsumablesReasonSelectedText" asp-for="@Model.BookingsModel.ConsumableReasonLCID" />
+                                            <input type="hidden" id="TyresReasonSelectedText" asp-for="@Model.BookingsModel.TyreReasonLCID" />
+                                            @*<input type="hidden" id="SellingPriceSelectedText" asp-for="OutworksCommission.SellingPrice" />*@
+                                            @Html.HiddenFor(model => model.JobCardBookingDetailsByID.BookingsID)
+                                            @Html.HiddenFor(model => model.JobCardBookingDetailsByID.VehicleID)
+                                            @*@Html.HiddenFor(model => model.LookupCodeModel.LookUpCodeID)*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-lg-2 mb-3 mb-lg-0">
+                                    <h4>Outworks Commission</h4>
+                                </div>
+
+                                <div class="col-lg-10">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <!-- Form Group -->
+                                                    <div class="form-group">
+                                                        <label class="input-label">Outworks Commission</label>
+                                                        <div class="form-control">
+                                                            <label class="checkbox-inline mb-5">
+                                                                <input id="customAuthorisationOutworks" type="checkbox" asp-for="BookingsModel.OutworksCommission.IsOutworksCommission">   Outworks Commission
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End Form Group -->
+                                                </div>
+                                                <div class="col-sm-6 SellingPricePanel">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Supplier Description</label>
+                                                        <input id="SupplierDescTextBox" type="text" class="form-control" required
+                                                               data-msg="Please enter a supplier description" placeholder="Supplier Description" asp-for="BookingsModel.OutworksCommission.SupplierDescription" aria-label="Current Value">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row supplierPOpanel">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">PO Number</label>
+                                                        <input id="POTextBox" type="text" class="form-control" required
+                                                               data-msg="Please enter a purchase order number" placeholder="PO Number" asp-for="BookingsModel.OutworksCommission.PONumber" aria-label="Current Value">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Quantity</label>
+                                                        <input id="QtyTextBox" type="number" class="form-control" required value="1" readonly
+                                                               data-msg="Please enter a quantity" placeholder="Quantity" asp-for="BookingsModel.OutworksCommission.Quantity" aria-label="Current Value">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row QtyIssuedPanel">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Issued</label>
+                                                        <div class="form-control">
+                                                            <label class="checkbox-inline mb-5">
+                                                                <input id="IssuedTextbox" type="checkbox" asp-for="BookingsModel.OutworksCommission.Isssued">   Issued
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Cost Ex VAT</label>
+                                                        <input id="CEVTextBox" type="text" class="form-control" required
+                                                               data-msg="Please enter a value" placeholder="Cost Ex VAT" asp-for="BookingsModel.OutworksCommission.CostExVAT" aria-label="Current Value" onchange="onChangeCEVT()">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row CostMarkupPanel">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Markup</label>
+                                                        <input id="MarkupTextBox" type="text" class="form-control"
+                                                               data-msg="Please enter a markup" placeholder="Markup" aria-label="Current Value" onchange="onChangeMarkup()">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group js-form-message">
+                                                        <label class="input-label">Selling Price</label>
+                                                        <input id="SellingPriceTextBox" type="text" class="form-control" asp-for="BookingsModel.OutworksCommission.SellingPrice" aria-label="Current Value">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="w-100"></div>
+                                            <!-- End Form -->
+                                            <input type="hidden" id="selectedText" asp-for="@Model.BookingsModel.BookingReasonLCID" />
+                                            <input type="hidden" id="PartReasonSelectedText" asp-for="@Model.BookingsModel.PartReasonLCID" />
+                                            <input type="hidden" id="LabourReasonSelectedText" asp-for="@Model.BookingsModel.LabourReasonLCID" />
+                                            <input type="hidden" id="ConsumablesReasonSelectedText" asp-for="@Model.BookingsModel.ConsumableReasonLCID" />
+                                            <input type="hidden" id="TyresReasonSelectedText" asp-for="@Model.BookingsModel.TyreReasonLCID" />
+                                            @*<input type="hidden" id="SellingPriceSelectedText" asp-for="OutworksCommission.SellingPrice" />*@
+                                            @Html.HiddenFor(model => model.JobCardBookingDetailsByID.BookingsID)
+                                            @Html.HiddenFor(model => model.JobCardBookingDetailsByID.VehicleID)
+                                            @*@Html.HiddenFor(model => model.LookupCodeModel.LookUpCodeID)*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+}
+<!-- End Content Section -->
+<!-- ========== END MAIN ========== -->
+@section scripts {
+    <!-- JS Plugins Init. -->
+    <script>
+        $(document).on('ready', function () {
+
+
+
+            if ($("#customAuthorisationOutworks").is(":checked")) {
+                $('.SellingPricePanel')
+                $('.CostMarkupPanel').show();
+                $('.QtyIssuedPanel').show();
+                $('.supplierPOpanel').show();
+                $('.SellingPricePanel').show();
+
+            } else {
+                $('.SellingPricePanel').hide();
+                $('.CostMarkupPanel').hide();
+                $('.QtyIssuedPanel').hide();
+                $('.supplierPOpanel').hide();
+                $('.SellingPricePanel').hide();
+            }
+
+
+            $('#tblDimensions tr').each(function (i, el) {
+                $('#tblDimensions').find('tr').eq(i).find(':input').each(function (ix, el) {
+                    var lastChar = el.id.substr(el.id.length - 1);
+                    if (el.name == "SellingPriceExVAT") {
+                        $("#txtSellingPrice" + lastChar).val(el.value.toString().replace(",", "."));
+                    }
+                });
+            });
+
+            $('#tblLabour tr').each(function (i, el) {
+                $('#tblLabour').find('tr').eq(i).find(':input').each(function (ix, el) {
+                    var lastChar = el.id.substr(el.id.length - 1);
+                    if (el.name == "SellingPriceExVAT") {
+                        $("#txtLabourSellingPrice" + lastChar).val(el.value.toString().replace(",", "."));
+                    }
+                    if (el.name == "Rate") {
+                        $("#txtLabourRate" + lastChar).val(el.value.toString().replace(",", "."));
+                    }
+                    if (el.name == "Hours") {
+                        $("#txtLabourHours" + lastChar).val(el.value.toString().replace(",", "."));
+                    }
+                });
+            });
+
+
+            $('#tblConsumables tr').each(function (i, el) {
+                $('#tblConsumables').find('tr').eq(i).find(':input').each(function (ix, el) {
+                    var lastChar = el.id.substr(el.id.length - 1);
+                    if (el.name == "SellingPriceExVAT") {
+                        $("#txtSellingPriceExVAT" + lastChar).val(el.value.toString().replace(",", "."));
+                    }
+                });
+            });
+
+            $('#tblTyres tr').each(function (i, el) {
+                $('#tblTyres').find('tr').eq(i).find(':input').each(function (ix, el) {
+                    var lastChar = el.id.substr(el.id.length - 1);
+                    if (el.name == "SellingPriceExVAT") {
+                        $("#txtTyreSellingPrice" + lastChar).val(el.value.toString().replace(",", "."));
+                    }
+                });
+            });
+
+        });
+
+    </script>
+    <script type="text/javascript">
+        $("#customAuthorisationOutworks").click(function () {
+            if ($(this).is(":checked")) {
+                $('.SellingPricePanel')
+                $('.CostMarkupPanel').show();
+                $('.QtyIssuedPanel').show();
+                $('.supplierPOpanel').show();
+                $('.SellingPricePanel').show();
+
+            } else {
+                $('.SellingPricePanel').hide();
+                $('.CostMarkupPanel').hide();
+                $('.QtyIssuedPanel').hide();
+                $('.supplierPOpanel').hide();
+                $('.SellingPricePanel').hide();
+            }
+        });
+    </script>
+    <script>
+        function onChangeMarkup() {
+            var markup = $('#MarkupTextBox').val();
+            var perc = markup / 100;            
+            var CostExVAT = $('#CEVTextBox').val();
+            var SellingPrice = parseFloat(perc) * parseFloat(CostExVAT.toString().replace(".", ","));
+            var CostPlusSellingPrice = parseFloat(SellingPrice) + parseFloat(CostExVAT);
+            $('#SellingPriceTextBox').val(CostPlusSellingPrice.toFixed(2).toString().replace(".", ","));
+        }
+
+        function onChangeCEVT() {
+            var CostExVAT = $('#CEVTextBox').val();
+            $('#CEVTextBox').val(CostExVAT.toString().replace(".", ","));
+        }
+    </script>
+    <style>
+        .sticky {
+            position: sticky;
+            top: 60px;
+            margin-top: -50px
+        }
+    </style>
+    <script src="~/front-dashboard-v1.1/js/bloodhound.min.js"></script>
+    <script src="~/front-dashboard-v1.1/js/handlebars.min-v4.7.7.js"></script>
+    <script src="~/front-dashboard-v1.1/js/typeahead.bundle.min.js"></script>
+    <script>
+                var uniqueID = @counter + 1;
+
+
+        $("#tblDimensions").on("click", "#Delete", function () {
+            $(this).closest("tr").remove();
+        });
+        $('#PartBookingReasons'),
+            snameP = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.title);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: 'GetParts?LookUpCodeIDParts=701&detail=%QUERY',
+                    replace: function (url) {
+                        var ponumber = null;
+                        $(":focus").each(function () {
+                            ponumber = "#" + this.id;
+                        });
+                        return url.replace('%QUERY', $(ponumber).val());
+                    },
+                    filter: function (snameP) {
+                        return snameP;
+                    }
+                }
+            });
+
+        // Initialize the Bloodhound suggestion engine
+        snameP.initialize();
+
+        var txtPartsTypeahead = {
+            hint: false,
+            highlight: true,
+            minLength: 1,
+            limit: 10,
+            display: Handlebars.compile('{{detail}}'),
+            source: snameP.ttAdapter(),
+            cache: false,
+            classNames: {
+                open: 'is-open',
+                empty: 'is-empty',
+                cursor: 'is-active',
+                suggestion: 'Typeahead-suggestion',
+                selectable: 'Typeahead-selectable'
+            },
+            templates: {
+                empty: [
+                    '<div class="empty-message" id="mnuDisplay">',
+                    'Unable to find any parts that match the current query',
+                    '</div>'
+                ].join('\n'),
+                //<p style='padding:6px'><img width=50 src='{{poster_path}}'> <b>{{value}}</b> - Release date {{release_date}} </p>
+                suggestion: Handlebars.compile('<div><label>{{additionalField1Name}} - {{detail}}</label></div>'),
+                footer: Handlebars.compile("<b> Searched for '{{query}}'</b>")
+
+            }
+        };
+
+
+        // Instantiate the Typeahead UI
+        $('#PartBookingReasons').typeahead('destroy');
+
+        $('#PartBookingReasons').typeahead(null, txtPartsTypeahead).on("typeahead:selected",
+            function (obj, selectedItem) {
+                $('#PartBookingReasons').typeahead('val', '');
+                var html = `<tr class="rowClass">
+							                                <td style="width:2%"><label id="txtLineNo${uniqueID}">${uniqueID}</label></td>
+                                                            <td style="width:10%" class="js-form-message formClass"><input type="text" class="form-control formClass" id="txtPartNumber${uniqueID}" name="PartNumber" value="${selectedItem.additionalField1Name}" readonly /></td>
+                                                            <td style="width:17%" class="js-form-message formClass"><input type="text" class="form-control formClass" id="txtDescription${uniqueID}" name="Description" value="${selectedItem.detail}" readonly /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="number" class="form-control formClass" id="txtQty${uniqueID}" name="Quantity"  required /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control formClass numberValidation" id="txtSellingPrice${uniqueID}" name="SellingPriceExVAT" onkeypress="return event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)" required /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control formClass" id="txtNote${uniqueID}" name="Note" /></td>
+                                                            <td style="width:3%" class="js-form-message">
+                                                                <label class="checkbox-inline">
+                                                                    <input id="chkIssued${uniqueID}" class="formClass" type="checkbox" name="Issued">
+                                                                </label>
+                                                            </td>
+                                                            <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                            <td style="width:1%"><input type="hidden" class="formClass" id="txtBookingsID${uniqueID}" name="BookingsID" value="${@Model.BookingID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="formClass" id="txtVehicleID${uniqueID}" name="VehicleID" value="${@Model.VehicleID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="formClass" id="txtLookUpCodeID${uniqueID}" name="InventoryID" value="${selectedItem.lookUpCodeID}" /></td>
+                            </tr>`;
+
+                $("#tblDimensions tbody").append(html);
+
+
+                uniqueID++;
+            });
+    </script>
+    <script>
+        var LabouruniqueID = @labourCounter + 1;
+
+
+        $("#tblLabour").on("click", "#Delete", function () {
+            $(this).closest("tr").remove();
+        });
+
+
+
+        $('#LabourBookingReasons'),
+            sname = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.title);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: 'GetParts?LookUpCodeIDParts=703&detail=%QUERY',
+                    replace: function (url) {
+                        var ponumber = null;
+                        $(":focus").each(function () {
+                            ponumber = "#" + this.id;
+                        });
+                        return url.replace('%QUERY', $(ponumber).val());
+                    },
+                    filter: function (sname) {
+                        return sname;
+                    }
+                }
+            });
+
+        // Initialize the Bloodhound suggestion engine
+        sname.initialize();
+
+        var txtSenderSiteTypeahead = {
+            hint: false,
+            highlight: true,
+            minLength: 1,
+            limit: 10,
+            display: Handlebars.compile('{{detail}}'),
+            source: sname.ttAdapter(),
+            cache: false,
+            classNames: {
+                open: 'is-open',
+                empty: 'is-empty',
+                cursor: 'is-active',
+                suggestion: 'Typeahead-suggestion',
+                selectable: 'Typeahead-selectable'
+            },
+            templates: {
+                empty: [
+                    '<div class="empty-message" id="mnuDisplay">',
+                    'Unable to find any parts that match the current query',
+                    '</div>'
+                ].join('\n'),
+                //<p style='padding:6px'><img width=50 src='{{poster_path}}'> <b>{{value}}</b> - Release date {{release_date}} </p>
+                suggestion: Handlebars.compile('<div><label>{{detail}}</label></div>'),
+                footer: Handlebars.compile("<b> Searched for '{{query}}'</b>")
+
+            }
+        };
+
+
+        // Instantiate the Typeahead UI
+        $('#LabourBookingReasons').typeahead('destroy');
+
+
+        $('#LabourBookingReasons').typeahead(null, txtSenderSiteTypeahead).on("typeahead:selected",
+            function (obj, selectedItem) {
+                $('#LabourBookingReasons').typeahead('val', '');
+                var html = `<tr class="rowClassLabour">
+							                                <td style="width:2%"><label id="txtLineNo${LabouruniqueID}">${LabouruniqueID}</label></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control labourClass" id="txtLabourCode${LabouruniqueID}" name="LabourCode" value="${selectedItem.detail}" readonly /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control labourClass numberValidationLabour" id="txtLabourHours${LabouruniqueID}" name="Hours" onkeypress="return event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)"/></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control labourClass numberValidationLabour" id="txtLabourRate${LabouruniqueID}" name="Rate" onkeypress="return event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)" data-msg="Please enter a rate" required /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control labourClass numberValidationLabour" id="txtLabourSellingPrice${LabouruniqueID}" name="SellingPriceExVAT" value="${selectedItem.faIconString}" readonly onkeypress="return event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)"/></td>
+                                                            <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                            <td style="width:1%"><input type="hidden" class="labourClass" id="txtLabourBookingsID${uniqueID}" name="BookingsID" value="${@Model.BookingID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="labourClass" id="txtLabourVehicleID${uniqueID}" name="VehicleID" value="${@Model.VehicleID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="labourClass" id="txtLabourLookUpCodeID${LabouruniqueID}" name="InventoryID" value="${selectedItem.lookUpCodeID}" /></td>
+                            </tr>`;
+
+                $("#tblLabour tbody").append(html);
+
+
+                    LabouruniqueID++;
+
+            });
+    </script>
+    <script>
+        var ConsumableuniqueID = @consumableCounter +  1;
+
+
+
+        $("#tblConsumables").on("click", "#Delete", function () {
+            $(this).closest("tr").remove();
+        });
+
+        $('#ConsumableBookingReasons'),
+            sname = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.title);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: 'GetParts?LookUpCodeIDParts=705&detail=%QUERY',
+                    replace: function (url) {
+                        var ponumber = null;
+                        $(":focus").each(function () {
+                            ponumber = "#" + this.id;
+                        });
+                        return url.replace('%QUERY', $(ponumber).val());
+                    },
+                    filter: function (sname) {
+                        return sname;
+                    }
+                }
+            });
+
+        // Initialize the Bloodhound suggestion engine
+        sname.initialize();
+
+        var txtSenderSiteTypeahead = {
+            hint: false,
+            highlight: true,
+            minLength: 1,
+            limit: 10,
+            display: Handlebars.compile('{{detail}}'),
+            source: sname.ttAdapter(),
+            cache: false,
+            classNames: {
+                open: 'is-open',
+                empty: 'is-empty',
+                cursor: 'is-active',
+                suggestion: 'Typeahead-suggestion',
+                selectable: 'Typeahead-selectable'
+            },
+            templates: {
+                empty: [
+                    '<div class="empty-message" id="mnuDisplay">',
+                    'Unable to find any parts that match the current query',
+                    '</div>'
+                ].join('\n'),
+                //<p style='padding:6px'><img width=50 src='{{poster_path}}'> <b>{{value}}</b> - Release date {{release_date}} </p>
+                suggestion: Handlebars.compile('<div><label>{{detail}}</label></div>'),
+                footer: Handlebars.compile("<b> Searched for '{{query}}'</b>")
+
+            }
+        };
+
+
+        // Instantiate the Typeahead UI
+        $('#ConsumableBookingReasons').typeahead('destroy');
+
+
+        $('#ConsumableBookingReasons').typeahead(null, txtSenderSiteTypeahead).on("typeahead:selected",
+            function (obj, selectedItem) {
+                $('#ConsumableBookingReasons').typeahead('val', '');
+                var html = `<tr class="rowClassConsumables">
+							                                <td style="width:2%"><label id="txtLineNo${ConsumableuniqueID}">${ConsumableuniqueID}</label></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control consumableClass" id="txtConsumableCode${ConsumableuniqueID}" name="ConsumableCode" value="${selectedItem.detail}" readonly /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="number" class="form-control consumableClass" id="txtConsQuantity${ConsumableuniqueID}" name="Quantity" pattern="^[0-9]*$"/></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control consumableClass consumableValidation" id="txtConsSellingPrice${ConsumableuniqueID}" name="SellingPriceExVAT" value="${selectedItem.faIconString}" readonly onkeypress="return event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)"/></td>
+                                                            <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                            <td style="width:1%"><input type="hidden" class="consumableClass" id="txtConsBookingsID${uniqueID}" name="BookingsID" value="${@Model.BookingID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="consumableClass" id="txtConsVehicleID${uniqueID}" name="VehicleID" value="${@Model.VehicleID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="consumableClass" id="txtConsLookUpCodeID${ConsumableuniqueID}" name="InventoryID" value="${selectedItem.lookUpCodeID}" /></td>
+                            </tr>`;
+
+                $("#tblConsumables tbody").append(html);
+
+
+                ConsumableuniqueID++;
+
+            });
+    </script>
+    <script>
+        var TyreuniqueID = @tyreCounter + 1;
+
+
+        $("#tblTyres").on("click", "#Delete", function () {
+            $(this).closest("tr").remove();
+        });
+
+
+        $('#TyreBookingReasons'),
+            sname = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.title);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: 'GetParts?LookUpCodeIDParts=704&detail=%QUERY',
+                    replace: function (url) {
+                        var ponumber = null;
+                        $(":focus").each(function () {
+                            ponumber = "#" + this.id;
+                        });
+                        return url.replace('%QUERY', $(ponumber).val());
+                    },
+                    filter: function (sname) {
+                        return sname;
+                    }
+                }
+            });
+
+        // Initialize the Bloodhound suggestion engine
+        sname.initialize();
+
+        var txtSenderSiteTypeahead = {
+            hint: false,
+            highlight: true,
+            minLength: 1,
+            limit: 10,
+            display: Handlebars.compile('{{detail}}'),
+            source: sname.ttAdapter(),
+            cache: false,
+            classNames: {
+                open: 'is-open',
+                empty: 'is-empty',
+                cursor: 'is-active',
+                suggestion: 'Typeahead-suggestion',
+                selectable: 'Typeahead-selectable'
+            },
+            templates: {
+                empty: [
+                    '<div class="empty-message" id="mnuDisplay">',
+                    'Unable to find any parts that match the current query',
+                    '</div>'
+                ].join('\n'),
+                //<p style='padding:6px'><img width=50 src='{{poster_path}}'> <b>{{value}}</b> - Release date {{release_date}} </p>
+                suggestion: Handlebars.compile('<div><label>{{detail}}</label></div>'),
+                footer: Handlebars.compile("<b> Searched for '{{query}}'</b>")
+
+            }
+        };
+
+
+        // Instantiate the Typeahead UI
+        $('#TyreBookingReasons').typeahead('destroy');
+
+
+        $('#TyreBookingReasons').typeahead(null, txtSenderSiteTypeahead).on("typeahead:selected",
+            function (obj, selectedItem) {
+                $('#TyreBookingReasons').typeahead('val', '');
+                var html = `<tr class="rowClassTyres">
+							                                <td style="width:2%"><label id="txtLineNo${TyreuniqueID}">${TyreuniqueID}</label></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control tyreClass" id="txtTyreCode${TyreuniqueID}" name="TyreCode" value="${selectedItem.detail}" readonly /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="number" class="form-control tyreClass" id="txtTyreQuantity${TyreuniqueID}" name="Quantity" pattern="[0-9]{1,5}" /></td>
+                                                            <td style="width:10%" class="js-form-message"><input type="text" class="form-control tyreClass tyreValidation" id="txtTyreSellingPrice${TyreuniqueID}" name="SellingPriceExVAT" value="${selectedItem.faIconString}" readonly onkeypress="return event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)"/></td>
+                                                            <td style="width:0%"><a href="#" id="Delete" aria-label="Close Account Info Modal Box"><span class="far fa-trash-alt mr-1"></span></a></td>
+                                                            <td style="width:1%"><input type="hidden" class="tyreClass" id="txtTyreBookingsID${uniqueID}" name="BookingsID" value="${@Model.BookingID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="tyreClass" id="txtTyreVehicleID${uniqueID}" name="VehicleID" value="${@Model.VehicleID}" /></td>
+                                                            <td style="width:1%"><input type="hidden" class="tyreClass" id="txtLookUpCodeID${TyreuniqueID}" name="InventoryID" value="${selectedItem.lookUpCodeID}" /></td>
+                            </tr>`;
+
+                $("#tblTyres tbody").append(html);
+
+
+                TyreuniqueID++;
+
+            });
+
+    </script>
+    <script>
+        var PartsdataSet = [];
+        var LabourdataSet = [];
+        var ConsumablesdataSet = [];
+        var TyresdataSet = [];
+
+        $("#btnSave").click(function () {
+
+            //Parts
+            const res1 = $('.rowClass').map(function () {
+                var obj = {};
+                $(this).find('input.formClass, checkbox.formClass').each(function (i, el) {
+
+                    var lastChar = el.id.substr(el.id.length - 1);
+                    if (el.name == "Issued" && $("#chkIssued" + lastChar).is(":checked")) {
+                        el.value = true;
+                    }
+                    else if (el.name == "Issued" && !$("#chkIssued" + lastChar).is(":checked")) {
+                        el.value = false;
+                    }
+                    obj[el.name] = el.value;
+                })
+                return obj
+            }).get()
+
+            $('#PartReasonSelectedText').val(encodeURIComponent(JSON.stringify(res1)));
+            PartsdataSet.push(res1);
+            console.log($('#PartReasonSelectedText').val())
+
+            //Labour
+            const res2 = $('.rowClassLabour').map(function () {
+                var obj = {};
+                $(this).find('input.labourClass').each(function (i, el) {
+                    obj[el.name] = el.value;
+                })
+                return obj
+            }).get()
+
+            $('#LabourReasonSelectedText').val(encodeURIComponent(JSON.stringify(res2)));
+            LabourdataSet.push(res2);
+            console.log($('#LabourReasonSelectedText').val())
+
+            //Consumables
+            const res3 = $('.rowClassConsumables').map(function () {
+                var obj = {};
+                $(this).find('input.consumableClass').each(function (i, el) {
+                    obj[el.name] = el.value;
+                })
+                return obj
+            }).get()
+
+            $('#ConsumablesReasonSelectedText').val(encodeURIComponent(JSON.stringify(res3)));
+            ConsumablesdataSet.push(res3);
+            console.log($('#ConsumablesReasonSelectedText').val())
+
+            //Tyres
+            const res4 = $('.rowClassTyres').map(function () {
+                var obj = {};
+                $(this).find('input.tyreClass').each(function (i, el) {
+                    obj[el.name] = el.value;
+                })
+                return obj
+            }).get()
+
+            $('#TyresReasonSelectedText').val(encodeURIComponent(JSON.stringify(res4)));
+            TyresdataSet.push(res4);
+            console.log($('#TyresReasonSelectedText').val())
+
+        });
+    </script>
+    <style>
+        .twitter-typeahead {
+            width: 100%;
+        }
+
+        .tt-input {
+            width: 100%;
+        }
+
+        .tt-query, /* UPDATE: newer versions use tt-input instead of tt-query */
+        .tt-query { /* UPDATE: newer versions use tt-input instead of tt-query */
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+
+        .tt-hint {
+            color: #999;
+        }
+
+        .tt-menu { /* UPDATE: newer versions use tt-menu instead of tt-dropdown-menu */
+            width: 422px;
+            margin-top: 12px;
+            padding: 8px 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        }
+
+        .tt-suggestion {
+            padding: 3px 20px;
+            line-height: 24px;
+        }
+
+            .tt-suggestion.tt-is-under-cursor { /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+                color: #fff;
+                background-color: #0097cf;
+            }
+
+            .tt-suggestion p {
+                margin: 0;
+            }
+    </style>
+    <script>
+        $(function () {
+            $(".numberValidationLabour, .numberValidation, .tyreValidation, .consumableValidation").keydown(function (event) {
+
+
+                if (event.shiftKey == true) {
+                    event.preventDefault();
+                }
+
+                if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 46) {
+
+                } else if (event.keyCode == 110) {
+                    return true;
+                }
+                else {
+                    event.preventDefault();
+                }
+
+            });
+        });
+
+
+    </script>
+}

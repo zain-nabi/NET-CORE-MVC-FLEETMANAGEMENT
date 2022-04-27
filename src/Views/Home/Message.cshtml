@@ -1,0 +1,66 @@
+﻿@model Triton.Model.Utils.MessageModel
+@{
+    ViewData["Title"] = "Message";
+}
+
+@if (Model.Type == null)
+{
+    @*<main id="content" role="main" class="main">
+        <div class="container space-2 space-lg-3">
+            <div class="w-md-80 w-lg-50 text-center mx-md-auto">
+                <i class="@Model.Icon fa-5x mb-3"></i>
+                <div class="mb-5">
+                    <h1 class="h2">@Model.Title</h1>
+                    <p>@Model.Message</p>
+                </div>
+                <a class="btn btn-primary btn-pill transition-3d-hover px-5" href="@Model.Url">@Model.ButttonText</a>
+            </div>
+        </div>
+    </main>*@
+
+
+
+
+    <main id="content" role="main" class="main">
+        <div class="content container-fluid">
+            <!-- Message Body -->
+            <div id="checkoutStepSuccessMessage" style="">
+                <div class="text-center">
+                    <img class="img-fluid mb-3" src="~/front-dashboard-v1.1/dist/assets/svg/illustrations/hi-five.svg" alt="Image Description" style="max-width: 15rem;">
+                    <div class="mb-4">
+                        <h2>@Model.Title</h2>
+                    </div>
+
+                    <a class="btn btn-primary" href="@Model.Url">@Model.ButttonText </a>
+                </div>
+            </div>
+            <!-- End Message Body -->
+        </div>
+    </main>
+}
+else
+{
+    <main id="content" role="main" class="bg-img-hero-fixed" style="background-image: url(@LocalisationService.HtmlTemplate/assets/svg/illustrations/error-404.svg);">
+
+        <!-- ========== MAIN ========== -->
+        <div id="content" role="main">
+            <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Triton Fleet Management" },{ "HeadingSubTittle", "Lookup Codes" },{ "HeadingSubDetails", "Overview" } }' />
+            <!-- Hero Section -->
+            <div class="d-lg-flex">
+                <div class="container d-lg-flex align-items-lg-center min-vh-lg-100 space-4">
+                    <div class="w-lg-60 w-xl-50">
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <img class="max-w-23rem mb-3" src="@LocalisationService.HtmlTemplate/assets/svg/illustrations/error-number-404.svg" alt="SVG Illustration">
+                            <p class="lead">@Model.Message</p>
+                        </div>
+                        <!-- End Title -->
+                        @*<a class="btn btn-wide btn-primary transition-3d-hover" href="../landings/index.html">Back Home</a>*@
+                    </div>
+                </div>
+            </div>
+            <!-- End Hero Section -->
+        </div>
+        <!-- ========== END MAIN ========== -->
+    </main>
+}

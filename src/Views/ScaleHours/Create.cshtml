@@ -1,0 +1,92 @@
+﻿@model Triton.FleetManagement.Web.Models.ScaleHourViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Fleet Management" }, { "HeadingSubTittle", "Cost Scales" }, { "HeadingSubDetails", "Create" } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <form class="js-validate" id="form1" method="post" asp-action="Create" asp-controller="ScaleHours">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">New Cost Scale</p>
+                </div>
+                <div class="card-body">
+                    @if (Model.ScaleExistErrorMessage != null)
+                    {
+                        <div class="alert alert-soft-danger alert-dismissible fade show" role="alert">
+                            <strong>@Model.ScaleExistErrorMessage</strong>
+
+                        </div>
+                    }
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Employee</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            <select id="EmployeeDDL" required class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="ScaleHoursModel.EmployeeID" asp-items="Model.CostScaleUsersModelList"
+                                    data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Employee"
+                                                }'>
+                                <option label="empty"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Cost Scale Hour</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            <div class="js-quantity-counter input-group-quantity-counter">
+                                <input required type="number" class="js-result form-control input-group-quantity-counter-control" value="@Model.quantitySelectorValue" asp-for="ScaleHoursModel.CostScaleHour">
+
+                                <div class="input-group-quantity-counter-toggle">
+                                    <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
+                                        <i class="tio-remove"></i>
+                                    </a>
+                                    <a class="js-plus input-group-quantity-counter-btn" href="javascript:;">
+                                        <i class="tio-add"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <div class="w-100"></div>
+                    <!-- End Form -->
+                </div>
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a class="btn btn-white" href="@Url.Action("Search", "ScaleHours")">Cancel</a>
+                    <input type="submit" value="Save" class="btn btn-primary ml-2" id="btnSave" />
+                </div>
+                <!-- End Footer -->
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->
+@section scripts {
+    <!-- JS Plugins Init. -->
+    <script>
+        $(document).on('ready',
+            function () {
+                $("#form1").validate({
+
+                    errorClass: 'invalid-input'
+                });
+
+                jQuery.validator.addClassRules('numberValidation',
+                    {
+                        required: true,
+                        number: true
+                    });
+            });
+    </script>
+}

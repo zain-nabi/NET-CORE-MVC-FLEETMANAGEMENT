@@ -1,0 +1,140 @@
+﻿@model Triton.FleetManagement.Web.Models.VehicleViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var color = "btn-soft-success";
+    var btnText = "Activate";
+    var breadCrumbHeadingSubDetails = "Activate";
+
+    if (Model.VehicleDetailsByID.DeletedByUserID == 0)
+    {
+        color = "btn-soft-danger";
+        btnText = "De-activate";
+        breadCrumbHeadingSubDetails = "De-Activate";
+    }
+
+    var usernameRole = "Service Advisor";
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Administration" }, { "HeadingSubTittle", "Vehicles" }, { "HeadingSubDetails", @breadCrumbHeadingSubDetails },{ "usernameRole", @usernameRole } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <form class="js-validate" id="form1" method="post" asp-action="Activate" asp-controller="Vehicle">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">@Model.VehicleDetailsByID.cName</p>
+                </div>
+                <div class="card-body">
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Customer</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.cName)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Registration Number</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.RegistrationNumber)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Fleet Number</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.FleetNumber)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Vehicle Make</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.LCVehicleBrandDetail)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Vehicle Model</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.LCVehicleClassDetail)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Vehicle Year</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.VehicleYear)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">VIN Number</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.VinNumber)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Engine Number</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.EngineNumber)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">License Number</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.VehicleDetailsByID.LicenseNumber)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- End Input -->
+                    <div class="w-100"></div>
+                    <!-- End Form -->
+                    @Html.HiddenFor(model => model.VehicleDetailsByID.VehicleID)
+                    @Html.HiddenFor(model => model.VehicleDetailsByID.CustomerID)
+                </div>
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a class="btn btn-white" href="@Url.Action("Search", "Vehicle")">Cancel</a>
+                    <input type="submit" value="@btnText" class="btn @color ml-2" id="btnSave" />
+                </div>
+                <!-- End Footer -->
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->
+@section scripts {
+    <!-- JS Plugins Init. -->
+    <script>
+        $(document).on('ready',
+            function () {
+                $("#form1").validate({
+
+                    errorClass: 'invalid-input'
+                });
+
+                jQuery.validator.addClassRules('numberValidation',
+                    {
+                        required: true,
+                        number: true
+                    });
+            });
+    </script>
+}

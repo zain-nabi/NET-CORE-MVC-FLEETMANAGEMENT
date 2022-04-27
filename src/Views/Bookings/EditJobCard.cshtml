@@ -1,0 +1,384 @@
+﻿@model Triton.FleetManagement.Web.Models.BookingsViewModel
+@{
+    ViewData["Title"] = "EditJobCard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Bookings" }, { "HeadingSubTittle", "Part, Consumable, Labour and Tyre Reasons" }, { "HeadingSubDetails", "Edit" } }' />
+    <div class="content container-fluid my-n9">
+        <form class="js-validate" id="form1" method="post" asp-action="JobCard" asp-controller="Bookings">
+            <div class="card sticky" style="z-index: 99; border: none; ">
+                <div class="card-footer" style="border: none; ">
+                    <a style="float:right" class="btn btn-white" href="@Url.Action("GetAllBookings", "Bookings")">Cancel</a>
+                    <input style="float:right" type="submit" value="Save" class="btn btn-primary mr-2" id="btnSave" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <h4>Part Reason</h4>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-header-title">
+                                Parts
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <input type="search" class="form-control" id="PartBookingReasons" placeholder="Parts">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblDimensions" style="width:100%">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Line No</th>
+                                                    <th>Part Number</th>
+                                                    <th>Part Description</th>
+                                                    <th>Issued</th>
+                                                    <th>Quantity</th>
+                                                    <th>Selling Price</th>
+                                                    <th>Note</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach (var item in Model.BookingsModel.PartReasons)
+                                                {
+                                                    <tr class="rowClass">
+                                                        <td style="width:1%"><input type="hidden" class="formClass" id="txtBookingsID" name="BookingsID" value="@item.BookingsID" /></td>
+                                                        <td style="width:1%"><input type="hidden" class="formClass" id="txtVehicleID" name="VehicleID" value="@item.VehicleID" /></td>
+                                                        <td style="width:1%"><input type="hidden" class="formClass" id="txtLookUpCodeID" name="InventoryID" value="@item.InventoryID" /></td>
+                                                        <td style="width:2%"><label id="txtLineNo"></label></td>
+                                                        <td style="width:10%" class="js-form-message formClass"><input type="text" class="form-control formClass" id="txtPartNumber" name="PartNumber" value="" readonly /></td>
+                                                        <td style="width:10%" class="js-form-message formClass"><input type="text" class="form-control formClass" id="txtDescription" name="Description" value="" readonly /></td>
+                                                        <td style="width:10%" class="js-form-message">
+                                                            <label class="checkbox-inline">
+                                                                <input id="chkIssued" class="formClass" type="checkbox" name="Issued">
+                                                            </label>
+                                                        </td>
+                                                        <td style="width:10%" class="js-form-message"><input type="text" class="form-control formClass" id="txtQty" name="Quantity" required /></td>
+                                                        <td style="width:10%" class="js-form-message"><input type="text" class="form-control formClass" id="txtSellingPrice" name="SellingPriceExVAT" required /></td>
+                                                        <td style="width:10%" class="js-form-message"><input type="text" class="form-control formClass" id="txtNote" name="Note" /></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-5">
+                        <div class="card-header">
+                            <div class="card-header-title">
+                                Labour
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <input type="search" class="form-control" id="LabourBookingReasons" placeholder="Labour">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblLabour" style="width:100%">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Line No</th>
+                                                    <th>Labour Code</th>
+                                                    <th>Hours</th>
+                                                    <th>Rate</th>
+                                                    <th>Selling Price</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-5">
+                        <div class="card-header">
+                            <div class="card-header-title">
+                                Consumables
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <input type="search" class="form-control" id="ConsumableBookingReasons" placeholder="Consumables">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblConsumables" style="width:100%">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Line No</th>
+                                                    <th>Consumable Code</th>
+                                                    <th>Quantity</th>
+                                                    <th>Selling Price</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-5">
+                        <div class="card-header">
+                            <div class="card-header-title">
+                                Tyres
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <input type="search" class="form-control" id="TyreBookingReasons" placeholder="Tyres">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle" id="tblTyres" style="width:100%">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Line No</th>
+                                                    <th>Description</th>
+                                                    <th>Quantity</th>
+                                                    <th>Selling Price</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-5">
+            <div class="row">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <h4>Outworks Commission</h4>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group">
+                                        <label class="input-label">Outworks Commission</label>
+                                        <div class="form-control">
+                                            <label class="checkbox-inline mb-5">
+                                                <input id="customAuthorisationOutworks" type="checkbox" asp-for="BookingsModel.OutworksCommission.IsOutworksCommission">   Outworks Commission
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+                                </div>
+                                <div class="col-sm-6 SellingPricePanel">
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Supplier Description</label>
+                                        <input id="SupplierDescTextBox" type="text" class="form-control" required
+                                               data-msg="Please enter a supplier description" placeholder="Supplier Description" asp-for="BookingsModel.OutworksCommission.SupplierDescription" aria-label="Current Value">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row supplierPOpanel">
+                                <div class="col-sm-6">
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">PO Number</label>
+                                        <input id="POTextBox" type="text" class="form-control" required
+                                               data-msg="Please enter a purchase order number" placeholder="PO Number" asp-for="BookingsModel.OutworksCommission.PONumber" aria-label="Current Value">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Quantity</label>
+                                        <input id="QtyTextBox" type="number" class="form-control" required
+                                               data-msg="Please enter a quantity" placeholder="Quantity" asp-for="BookingsModel.OutworksCommission.Quantity" aria-label="Current Value">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row QtyIssuedPanel">
+                                <div class="col-sm-6">
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Issued</label>
+                                        <div class="form-control">
+                                            <label class="checkbox-inline mb-5">
+                                                <input id="IssuedTextbox" type="checkbox" asp-for="BookingsModel.OutworksCommission.Isssued">   Issued
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Cost Ex VAT</label>
+                                        <input id="CEVTextBox" type="text" class="form-control" required
+                                               data-msg="Please enter a value" placeholder="Cost Ex VAT" asp-for="BookingsModel.OutworksCommission.CostExVAT" aria-label="Current Value" onchange="onChangeCEVT()">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row CostMarkupPanel">
+                                <div class="col-sm-6">
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Markup</label>
+                                        <input id="MarkupTextBox" type="text" class="form-control" required
+                                               data-msg="Please enter a markup" placeholder="Markup" aria-label="Current Value" onchange="onChangeMarkup()">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Selling Price</label>
+                                        <input id="SellingPriceTextBox" type="text" class="form-control" asp-for="BookingsModel.OutworksCommission.SellingPrice" aria-label="Current Value">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="w-100"></div>
+                            <!-- End Form -->
+                            <input type="hidden" id="selectedText" asp-for="@Model.BookingsModel.BookingReasonLCID" />
+                            <input type="hidden" id="PartReasonSelectedText" asp-for="@Model.BookingsModel.PartReasonLCID" />
+                            <input type="hidden" id="LabourReasonSelectedText" asp-for="@Model.BookingsModel.LabourReasonLCID" />
+                            <input type="hidden" id="ConsumablesReasonSelectedText" asp-for="@Model.BookingsModel.ConsumableReasonLCID" />
+                            <input type="hidden" id="TyresReasonSelectedText" asp-for="@Model.BookingsModel.TyreReasonLCID" />
+                            @*<input type="hidden" id="SellingPriceSelectedText" asp-for="OutworksCommission.SellingPrice" />*@
+                            @Html.HiddenFor(model => model.JobCardBookingDetailsByID.BookingsID)
+                            @Html.HiddenFor(model => model.JobCardBookingDetailsByID.VehicleID)
+                            @*@Html.HiddenFor(model => model.LookupCodeModel.LookUpCodeID)*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->
+
+
+@section scripts{
+    <script src="~/front-dashboard-v1.1/js/bloodhound.min.js"></script>
+    <script src="~/front-dashboard-v1.1/js/handlebars.min-v4.7.7.js"></script>
+    <script src="~/front-dashboard-v1.1/js/typeahead.bundle.min.js"></script>
+
+    <script>
+
+
+       const res1 = $('.rowClass').map(function () {
+            var obj = {};
+           $(this).find('input.consumableClass').each(function (i, el) {
+
+                var lastChar = el.id.substr(el.id.length - 1);
+                $('#ConsumableBookingReasons' + lastChar),
+                    sname = new Bloodhound({
+                        datumTokenizer: function (datum) {
+                            return Bloodhound.tokenizers.whitespace(datum.title);
+                        },
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        remote: {
+                            url: 'GetParts?LookUpCodeIDParts=701&detail=%QUERY',
+                            replace: function (url) {
+                                var ponumber = null;
+                                $(":focus").each(function () {
+                                    ponumber = "#" + this.id;
+                                });
+                                return url.replace('%QUERY', $(ponumber).val());
+                            },
+                            filter: function (sname) {
+                                return sname;
+                            }
+                        }
+                    });
+
+                // Initialize the Bloodhound suggestion engine
+                sname.initialize();
+
+                var txtSenderSiteTypeahead = {
+                    hint: false,
+                    highlight: true,
+                    minLength: 1,
+                    limit: 10,
+                    display: Handlebars.compile('{{detail}}'),
+                    source: sname.ttAdapter(),
+                    cache: false,
+                    classNames: {
+                        open: 'is-open',
+                        empty: 'is-empty',
+                        cursor: 'is-active',
+                        suggestion: 'Typeahead-suggestion',
+                        selectable: 'Typeahead-selectable'
+                    },
+                    templates: {
+                        empty: [
+                            '<div class="empty-message" id="mnuDisplay">',
+                            'Unable to find any parts that match the current query',
+                            '</div>'
+                        ].join('\n'),
+                        //<p style='padding:6px'><img width=50 src='{{poster_path}}'> <b>{{value}}</b> - Release date {{release_date}} </p>
+                        suggestion: Handlebars.compile('<div><label>{{detail}}</label></div>'),
+                        footer: Handlebars.compile("<b> Searched for '{{query}}'</b>")
+
+                    }
+                };
+
+
+                // Instantiate the Typeahead UI
+                $('#ConsumableBookingReasons' + lastChar).typeahead('destroy');
+
+                $('#ConsumableBookingReasons' + lastChar).typeahead(null, txtSenderSiteTypeahead).on("typeahead:selected",
+                    function (obj, selectedItem) {
+                        $('#ConsumableBookingReasons' + lastChar).typeahead('val', '');
+
+                        $("#ConsumableBookingReasons" + lastChar).val(selectedItem.name);
+
+
+                        uniqueID++;
+                    });
+            })
+            return obj
+        }).get()
+
+       
+    </script>
+}

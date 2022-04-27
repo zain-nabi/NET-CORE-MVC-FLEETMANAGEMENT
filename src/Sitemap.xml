@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap>
+	<mvcSiteMapNode mainTitle="Administration" icon="far fa-clipboard-list-check">
+		<mvcSiteMapSubTitle subTitle="Categories">
+			<mvcSiteMapSubTitleChild childTitle="Lookups" controller="LookUpCodeCategories" action="LookUpCodeCategories" roles="Admin Director, Development Manager, Developer, Junior Developer, Bm" />
+		</mvcSiteMapSubTitle>
+		<mvcSiteMapSubTitle subTitle="Customers ">
+			<mvcSiteMapSubTitleChild childTitle="Overview" controller="Customer" action="GetAllCustomers" roles="Admin Manager, Admin Director, Managing Director, Development Manager, Developer, Junior Developer, Bm" />
+			<mvcSiteMapSubTitleChild childTitle="Add Customer" controller="Customer" action="Index" roles="Admin Director, Admin Manager, Development Manager, Developer, Junior Developer, Bm" />
+		</mvcSiteMapSubTitle>
+		<mvcSiteMapSubTitle subTitle="Employees">
+			<mvcSiteMapSubTitleChild childTitle="Cost Scale Hours" controller="ScaleHours" action="Search" roles="Admin Manager, Admin Director, Managing Director, Development Manager, Developer, Junior Developer, Bm" />
+		</mvcSiteMapSubTitle>
+		<mvcSiteMapSubTitle subTitle="Vehicles">
+			<mvcSiteMapSubTitleChild childTitle="Search Vehicle" controller="Vehicle" action="Search" roles="Service Advisor, Admin Director, Managing Director, Development Manager, Developer, Junior Developer, Bm" />
+			<mvcSiteMapSubTitleChild childTitle="Add Vehicle" controller="Vehicle" action="Create" roles="Service Advisor, Admin Director, Managing Director, Development Manager, Developer, Junior Developer, Bm" />
+		</mvcSiteMapSubTitle>
+	</mvcSiteMapNode>
+
+	<mvcSiteMapNode mainTitle="Jobs" icon="far fa-tools">
+		<mvcSiteMapSubTitle subTitle="Bookings">
+			<mvcSiteMapSubTitleChild childTitle="Overview" controller="Bookings" action="GetAllBookings" roles="Admin Director, Managing Director, Service Advisor, Development Manager, Developer, Junior Developer, Bm" />
+			<mvcSiteMapSubTitleChild childTitle="Add Booking" controller="Bookings" action="Index" roles="Admin Director, Managing Director, Service Advisor, Development Manager, Developer, Junior Developer, Bm" />
+		</mvcSiteMapSubTitle>
+	</mvcSiteMapNode>
+
+	<mvcSiteMapNode mainTitle="Reports" icon="far fa-analytics">
+		<mvcSiteMapSubTitle subTitle="Sales">
+			<mvcSiteMapSubTitleChild childTitle="Sales Per Customer" controller="Report" action="SalesPerCustomer" roles="Admin Director, Managing Director, Service Advisor, Development Manager, Developer, Junior Developer, Bm, Admin Manager" />
+			<mvcSiteMapSubTitleChild childTitle="Sales Summary" controller="Report" action="SalesSummary" roles="Admin Director, Managing Director, Service Advisor, Development Manager, Developer, Junior Developer, Bm, Admin Manager" />
+			<mvcSiteMapSubTitleChild childTitle="Sales Per Category" controller="Report" action="SalesPerCategory" roles="Admin Director, Managing Director, Service Advisor, Development Manager, Developer, Junior Developer, Bm, Admin Manager" />
+		</mvcSiteMapSubTitle>
+	</mvcSiteMapNode>
+</mvcSiteMap>
+
+

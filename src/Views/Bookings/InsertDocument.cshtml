@@ -1,0 +1,187 @@
+﻿@model Triton.Service.Model.TritonFleetManagement.Tables.Bookings
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameRole = "Service Advisor";
+
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) 
+{ 
+    { "HeadingDetails", "Fleet Management" }, 
+    { "HeadingSubTittle", "View" }, 
+    { "HeadingSubDetails", "Create" },
+    { "usernameRole", @usernameRole } ,
+    { "hrefLink", @Url.Action("ViewDocuments", "Bookings", new { bookingsID = Model.BookingsID }) },{ "action", " View" },
+    { "btnIcon","class= tio-visible-outlined" }
+}' />
+    <!-- End Breadcrumb Section -->
+
+  
+    
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <form id="Form1" method="post" enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">Vehicle Image Upload</p>
+                  
+                </div>
+                <div class="card-body">
+                    <div id="attachFilesLabel" class="js-dropzone dropzone-custom custom-file-boxed">
+                        <div class="dz-message dz-filename">
+                            <img class="avatar avatar-xl avatar-4by3 mb-3" src="~/front-dashboard-v1.1/dist/assets/svg/illustrations/browse.svg" alt="Image Description">
+                            <h5>Drag and drop your file here</h5>
+                            <p class="mb-2">or</p>
+                            <span class="btn btn-sm btn-white">Browse files</span>
+                            @*<input name="File" id="File" type="file" multiple class="form-control" required>*@
+                        </div>
+                    </div>
+
+
+                    <!-- End Dropzone -->
+                    <br />
+                    <div class="float-right">
+                        @*<button type="submit" class="btn btn-primary" id="submit">Save All Images</button>*@
+                        <input type="submit" value="Save Images" id="submit" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="bookingID" value="@Model.BookingsID" />
+        </form>
+    </div>
+
+    <!-- End Content Section -->
+</main>
+@section scripts{
+    <script src="~/front-dashboard-v1.1/dist/assets/vendor/dropzone/dist/dropzone.js"></script>
+    <script src="~/front-dashboard-v1.1/dist/assets/vendor/dropzone/dist/min/dropzone.min.js"></script>
+    <script>
+        $(document).on('ready', function () {
+            // INITIALIZATION OF DROPZONE FILE ATTACH MODULE
+            // =======================================================
+            $('.js-dropzone').each(function () {
+                var dropzone = $.HSCore.components.HSDropzone.init('#' + $(this).attr('id'));
+
+                dropzone.on("addedfile", function (file) {
+                    console.log(file.name);
+                });
+            });
+        });
+
+        ; (function ($) {
+            'use strict';
+
+            $.HSCore.components.HSDropzone = {
+                defaults: {
+                    // Default variables
+                    url: "/Bookings/DocumentUpload",
+                    thumbnailWidth: 300,
+                    autoDiscover: false,
+                    uploadMultiple: true,
+                    autoProcessQueue: false,
+                    parallelUploads: 10,
+                    paramName: function myParamName() {
+                        return "File";
+                    },
+                    thumbnailHeight: 300,
+                    previewTemplate: $('<div>' +
+                        '  <div class="col h-100 px-1 mb-2">' +
+                        '    <div class="dz-preview dz-file-preview">' +
+                        '      <div class="d-flex justify-content-end dz-close-icon">' +
+                        '        <small class="tio-clear" data-dz-remove></small>' +
+                        '      </div>' +
+                        '      <div class="dz-details media">' +
+                        '        <div class="dz-img">' +
+                        '         <img class="img-fluid dz-img-inner" data-dz-thumbnail>' +
+                        '        </div>' +
+                        '        <div class="media-body dz-file-wrapper">' +
+                        '         <h6 class="dz-filename">' +
+                        '          <span class="dz-title" data-dz-name></span>' +
+                        '         </h6>' +
+                        '         <div class="dz-size" data-dz-size></div>' +
+                        '        </div>' +
+                        '      </div>' +
+                        '      <div class="dz-progress progress">' +
+                        '        <div class="dz-upload progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-dz-uploadprogress></div>' +
+                        '      </div>' +
+                        '      <div class="d-flex align-items-center">' +
+                        '        <div class="dz-success-mark">' +
+                        '          <span class="tio-checkmark-circle"></span>' +
+                        '        </div>' +
+                        '      </div>' +
+                        '    </div>' +
+                        '  </div>' +
+                        '</div>').html()
+                },
+
+                init: function (el, options) {
+                    if (!el.length) return;
+
+                    var context = this,
+                        $el = $(el),
+                        defaults = Object.assign({}, context.defaults),
+                        dataSettings = $el.attr('data-hs-dropzone-options') ? JSON.parse($el.attr('data-hs-dropzone-options')) : {},
+                        settings = {
+                            init: function () {
+                                var $this = this,
+                                    $message = $($this.element).find('.dz-message');
+
+                                $this.on('addedfile', function (file) {
+                                    if (String(file.type).slice(0, 6) !== 'image/') {
+                                        $(file.previewElement).find('.dz-img').replaceWith('<span class="dz-file-initials">' + file.name.substring(0, 1).toUpperCase() + '</span>');
+                                    }
+
+                                    $message.hide();
+                                });
+
+                                $this.on('removedfile', function () {
+                                    if ($this.files.length <= 0) {
+                                        $message.show();
+                                    }
+                                });
+                                $this.on("success", function (file, responseText) {
+                                            var responseText = file.name // or however you would point to your assigned file ID here;
+                                            console.log(responseText); // console should show the ID you pointed to
+                                            // do stuff with file.id ...
+                                            window.location.href = '@Url.Action("ViewDocuments","Bookings",new { bookingsID = Model.BookingsID })'
+                                        });
+                                var submitButton = document.querySelector("#submit");
+                                var myDropzone = this; //closure
+
+                                submitButton.addEventListener("click", function (e) {
+                                    //tell Dropzone to process all queued files
+                                    myDropzone.processQueue();
+                                    e.preventDefault();
+                                    @*setTimeout(function () {
+                                        window.location.href = '@Url.Action("ViewDocuments","Bookings",new { bookingsID = Model.BookingsID })'
+                                        }, 1000);*@
+                                });
+
+                                $this.on("sending", function (file, xhr, formData) {
+                                    $('#Form1').find('input').each(function ()
+                                    {
+                                        formData.append($(this).attr('name'), $(this).val());
+                                    });
+                                });
+                            }
+                        };
+                    settings = $.extend(true, defaults, settings, dataSettings, options);
+
+                    /* Start : Init */
+
+                    var newDropzone = new Dropzone(el, settings);
+
+                    /* End : Init */
+
+                    return newDropzone;
+                }
+
+            };
+
+        })(jQuery);
+    </script>
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "wwwroot/front-dashboard-v1.1/dist/assets/vendor/daterangepicker/daterangepicker.min.js",
+    "inputFiles": [
+      "wwwroot/front-dashboard-v1.1/dist/assets/vendor/daterangepicker/daterangepicker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/front-dashboard-v1.1/dist/assets/vendor/flatpickr/dist/flatpickr.min.js",
+    "inputFiles": [
+      "wwwroot/front-dashboard-v1.1/dist/assets/vendor/flatpickr/dist/flatpickr.js"
+    ]
+  }
+]

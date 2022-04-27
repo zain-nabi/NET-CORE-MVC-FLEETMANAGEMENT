@@ -1,0 +1,472 @@
+﻿@model Triton.FleetManagement.Web.Models.BookingsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameRole = "Service Advisor";
+
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Administration" }, { "HeadingSubTittle", "Booking Form" }, { "HeadingSubDetails", "Update" },{ "usernameRole", @usernameRole } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="js-nav-scroller hs-nav-scroller-horizontal">
+                <span class="hs-nav-scroller-arrow-prev" style="display: none;">
+                    <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                        <i class="tio-chevron-left"></i>
+                    </a>
+                </span>
+
+                <span class="hs-nav-scroller-arrow-next" style="display: none;">
+                    <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                        <i class="tio-chevron-right"></i>
+                    </a>
+                </span>
+
+                <ul class="nav nav-tabs page-header-tabs" id="projectsTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Booking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("AuditTrail", "Bookings", new { bookingID = Model.BookingID})">Audit</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- End Nav -->
+        </div>
+        <form class="js-validate" id="form1" method="post" asp-action="EditBookings" asp-controller="Bookings">
+            <div class="card sticky" style="z-index: 99; border:none">
+                <div class="card-footer" style="border-bottom:none">
+                    <a class="btn btn-white" style="float:right" href="@Url.Action("GetAllBookings", "Bookings")">Cancel</a>
+                    <input style="float:right" type="submit" value="Save" class="btn btn-primary mr-2" id="btnSave" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <h4>Vehicle information</h4>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="card-header-title">
+                                Vehicle Booking Form
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Customer Name</label>
+                                        @*<div>
+                                        @Html.DropDownListFor(m => m.BookingsModel.Bookings.CustomerID, new SelectList(Model.BookingsModel.Customers, "CustomerID", "Name"), new { @id = "CustomerID", @class = "js-select2-custom", required = "required", @onchange = "javascript:onCustomerClick()" })
+                                    </div>*@
+                                        <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="@Model.BookingsModel.Bookings.CustomerID" asp-items="@Model.CustomerList" required
+                                                data-msg="Please select a mechanic status."
+                                                data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Mechanic Status"
+                                                }'>
+                                            <option label="empty"></option>
+                                        </select>
+                                        <!-- End Select2 -->
+                                    </div>
+                                    <!-- End Form Group -->
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <label class="input-label">Vehicle Registration Number</label>
+                                    @*<div>
+                                    @Html.DropDownListFor(m => m.BookingsModel.Bookings.VehicleID, new SelectList(Model.BookingsModel.Vehicles, "VehicleID", "RegistrationNumber"), new { @id = "VehicleRegistrationsDropdown", @class = "js-select2-custom", required = "required" })
+                                </div>*@
+                                    <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="@Model.BookingsModel.Bookings.VehicleID" asp-items="@Model.VehicleList" required
+                                            data-msg="Please select a mechanic status."
+                                            data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Mechanic Status"
+                                                }'>
+                                        <option label="empty"></option>
+                                    </select>
+                                    <!-- End Select2 -->
+                                </div>
+                                <!-- End Form Group -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Service Category Types</label>
+                                        <div>
+                                            @Html.DropDownListFor(m => m.BookingsModel.Bookings.ServiceCategoryTypesLCID, new SelectList(Model.BookingsModel.ServiceCategoryTypes, "LookUpCodeID", "Name"), new { @class = "js-select2-custom" })
+                                        </div>
+
+                                    </div>
+                                    <!-- End Form Group -->
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <!-- Form Group -->
+                                        <label class="input-label">Category</label>
+                                        <div>
+                                            @Html.DropDownListFor(m => m.BookingsModel.Bookings.QuotationsLCID, new SelectList(Model.BookingsModel.Quotations, "LookUpCodeID", "Name"), new { @class = "js-select2-custom" })
+                                        </div>
+                                        <!-- End Form Group -->
+                                    </div>
+                                </div>
+
+
+                                <!-- End Form Group -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <label class="input-label">Mileage Or Hour</label>
+                                    <div>
+                                        @Html.DropDownListFor(m => m.BookingsModel.Bookings.MileAgeOrHourLCID, new SelectList(Model.BookingsModel.MileAgeOrHour, "LookUpCodeID", "Name"), new { @id = "MileAgeAndHour", @class = "js-select2-custom", @onchange = "javascript:onChangeMileAgeAndHour()" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+
+                                    <div id="MileAge" class="form-group js-form-message">
+                                        <label class="input-label">Mileage</label>
+
+                                        <input id="MileAgeTextBox" type="number" class="form-control stringValidation" required
+                                               data-msg="Please enter Mileage." placeholder="Mileage" aria-label="Current Value" value="@Model.BookingsModel.Bookings.MileAge" asp-for="@Model.BookingsModel.Bookings.MileAge">
+
+                                    </div>
+
+                                    <div id="Hour" class="form-group js-form-message">
+                                        <label class="input-label">Hour</label>
+
+                                        <input id="HourTextBox" type="number" class="form-control stringValidation" required
+                                               data-msg="Please enter Hour." placeholder="Hour" aria-label="Current Value" value="@Model.BookingsModel.Bookings.Hour" asp-for="@Model.BookingsModel.Bookings.Hour">
+
+                                    </div>
+
+                                    <!-- End Form Group -->
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group js-form-message">
+                                        <label for="licenseExpiaryLabel" class="input-label">Estimated Arrival Date</label>
+                                        <div class="js-form-message mb-3">
+                                            <!-- Flatpickr -->
+                                            <input type="text" class="js-flatpickr form-control flatpickr-custom" placeholder="Select dates" value="@Model.BookingsModel.Bookings.EstimatedArrival" asp-for="@Model.BookingsModel.Bookings.EstimatedArrival"
+                                                   data-hs-flatpickr-options='{
+                                                "dateFormat": "Y/m/d"
+                                            }'>
+                                            <!-- End Flatpickr -->
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+                                </div>
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group js-form-message">
+                                        <label for="licenseExpiaryLabel" class="input-label">Actual Arrival Date</label>
+                                        <div class="js-form-message mb-3">
+                                            <!-- Flatpickr -->
+                                            <input type="text" class="js-flatpickr form-control flatpickr-custom" placeholder="Select dates" value="@Model.BookingsModel.Bookings.ActualArrival" asp-for="@Model.BookingsModel.Bookings.ActualArrival"
+                                                   data-hs-flatpickr-options='{
+                                                "dateFormat": "Y/m/d"
+                                            }'>
+                                            <!-- End Flatpickr -->
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="input-label">Authorization</label>
+                                        @{
+                                            var authorization = (Model.BookingsModel.Bookings.Authorisation) ? "checked = checked" : string.Empty;
+                                        }
+                                        <div class="form-control">
+                                            <label class="checkbox-inline mb-5">
+                                                <input id="customAuthorisation" type="checkbox" asp-for="BookingsModel.Bookings.Authorisation" onclick="IsAuthorisationChecked();">   Authorized
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <!-- Form Group -->
+                                        <label class="input-label">Branches</label>
+                                        <div>
+                                            @Html.DropDownListFor(m => m.BookingsModel.Bookings.BranchID, new SelectList(Model.BookingsModel.Branches, "BranchID", "BranchFullName"), new { @class = "js-select2-custom" })
+                                        </div>
+                                        <!-- End Form Group -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-5">
+            <div class="row">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <h4>Booking Reason</h4>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="card-header-title">
+                                Vehicle Booking Form
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="input-label">Job Card</label>
+                                        <div class="form-control">
+                                            <label class="checkbox-inline mb-5">
+                                                <input type="checkbox" asp-for="BookingsModel.Bookings.isJobCard">   Yes
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="input-label">Mechanic Status</label>
+                                        <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="@Model.BookingsModel.Bookings.StatusLCID" asp-items="@Model.MechanicStatusTypesList" required
+                                                data-msg="Please select a mechanic status."
+                                                data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Mechanic Status"
+                                                }'>
+                                            <option label="empty"></option>
+                                        </select>
+                                        <!-- End Select2 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="input-label">Mechanic</label>
+                                        <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="BookingsModel.Bookings.MechanicEmployeeID" asp-items="Model.MechanicalEmployeesList"
+                                                data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Mechanic"
+                                                }'>
+                                            <option label="empty"></option>
+                                        </select>
+                                        <!-- End Select2 -->
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Vehicle Booking Reasons</label>
+                                        <div>
+
+                                            <select id="VehicleBookingReasons" class="js-select2-custom custom-select" multiple size="1" style="opacity: 0;" required onchange="javascript:onBookingReasonClick()"
+                                                    data-hs-select2-options='{
+                                           "minimumResultsForSearch": "Infinity"
+                                         }'>
+
+                                                @{
+                                                    var matched = Model.BookingsModel.BookingReasons.Where(a => Model.BookingsModel.BookingsReasons.Any(x => x.BookingReasonLCID == a.LookUpCodeID.ToString()));
+                                                    var firstDiffSecond = Model.BookingsModel.BookingReasons.Where(item => !Model.BookingsModel.BookingsReasons.Any(e => item.LookUpCodeID.ToString() == e.BookingReasonLCID));
+
+                                                    foreach (var item in matched)
+                                                    {
+                                                        <option value="@item.LookUpCodeID" selected>@item.Name</option>
+
+                                                    }
+                                                    foreach (var item in firstDiffSecond)
+                                                    {
+                                                        <option value="@item.LookUpCodeID">@item.Name</option>
+                                                    }
+                                                }
+
+
+                                            </select>
+                                            <!-- End Select2 -->
+                                        </div>
+
+                                    </div>
+                                    <!-- End Form Group -->
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+
+                                    <div class="form-group js-form-message">
+                                        <label class="input-label">Order Number</label>
+
+                                        <input id="OrdernumberTextBox" type="text" class="form-control stringValidation" required maxlength="255"
+                                               data-msg="Please enter Order Number." placeholder="Order Number" value="@Model.BookingsModel.Bookings.OrderNumber" asp-for="@Model.BookingsModel.Bookings.OrderNumber" aria-label="Current Value">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <!-- Form Group -->
+                                        <label class="input-label">Notes</label>
+
+                                        <div>
+                                            <textarea class="form-control" asp-for="@Model.BookingsModel.Bookings.Notes"></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form -->
+            <input type="hidden" id="hiddentextAuthorisation" asp-for="@Model.BookingsModel.Bookings.Authorisation" />
+            <input type="hidden" id="selectedText" asp-for="@Model.BookingsModel.BookingReasonLCID" />
+            <input type="hidden" asp-for="@Model.BookingsModel.Bookings.BookingsID" value="@Model.BookingsModel.Bookings.BookingsID" />
+            <input type="hidden" id="removedText" asp-for="@Model.BookingsModel.DeleteBookingReasonLCID" value="@Model.BookingsModel.DeleteBookingReasonLCID" />
+            <input type="hidden" id="PartReasonSelectedText" asp-for="@Model.BookingsModel.PartReasonLCID" />
+            <input type="hidden" id="DeletedReasonSelectedText" asp-for="@Model.BookingsModel.DeletedPartReasonLCID" />
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->
+@section scripts {
+    <!-- JS Plugins Init. -->
+    <script>
+        var removeBookingReasons = [];
+        var dataSet3 = [];
+
+        $(document).on('ready', function () {
+
+
+            var vals = $("#selectTag option").map(function () {
+                dataSet3.push(this.value);
+            }).get();
+
+            $('#PartReasonSelectedText').val(dataSet3);
+
+            onChangeMileAgeAndHour();
+            IsAuthorisationChecked();
+            onCustomerClick();
+            onBookingReasonClick();
+
+
+            $('#VehicleBookingReasons').on('select2:unselecting', function (e) {
+
+                var id = e.params.args.data.id; //your id
+                removeBookingReasons.push(id);
+                $('#removedText').val(removeBookingReasons);
+            });
+        });
+
+
+        function onChangeMileAgeAndHour() {
+            var selectText = $("#MileAgeAndHour option:selected").text();
+            selectedTextBoxToShow(selectText);
+        }
+
+
+
+        function selectedTextBoxToShow(selectValue) {
+            if (selectValue == 'Mileage') {
+                $("#Hour").hide();
+                $("#MileAge").show();
+            }
+            else if (selectValue == 'Hour') {
+                $("#MileAge").hide();
+                $("#Hour").show();
+            }
+
+        }
+
+        function IsAuthorisationChecked() {
+            var radioValue = ($("#customAuthorisation:checked").val()) ? true : false;
+            $("#hiddentextAuthorisation").attr("value", radioValue);
+        }
+
+
+        function onCustomerClick() {
+            var selectText = $("#CustomerID option:selected").attr('value');
+            $("#VehicleRegistrationsDropdown").empty();
+            $.ajax({
+                type: "GET",
+                url: "/Vehicle/GetVehicleByCustomerID",
+                data: { "customerID": selectText },
+                success: function (data) {
+
+                    for (var i = 0; i < data.length; i++) {
+                        if (i == 0) {
+                            $("#VehicleRegistrationsDropdown").append("<option value='" + data[i].vehicleID + "'selected>" + data[i].registrationNumber + "</option>");
+                        }
+                        else {
+                            $("#VehicleRegistrationsDropdown").append("<option value='" + data[i].vehicleID + "'>" + data[i].registrationNumber + "</option>");
+                        }
+
+                    }
+                }
+            });
+        }
+
+        function onBookingReasonClick() {
+
+            var dataSet = [];
+            var selections = $("#VehicleBookingReasons").select2('data');
+            $.each(selections, function (index, value) {
+                dataSet.push(value.id);
+            });
+
+            $('#selectedText').val(dataSet);
+        }
+
+        function onPartReasonClick() {
+            var dataSet = [];
+            var vals = $("#selectTag option").map(function () {
+                dataSet.push(this.value);
+            }).get();
+            $('#PartReasonSelectedText').val(dataSet);
+        }
+    </script>
+    <script>
+        $('#selectTag').click(function () {
+            var dataSet = [];
+            var dataSet2 = [];
+
+            $('#PartReasonSelectedText').val('');
+            dataSet2.push($("#selectTag option:selected").val());
+            $('#DeletedReasonSelectedText').val(dataSet2);
+            $("#selectTag option:selected").remove();
+
+
+            var vals = $("#selectTag option").map(function () {
+                dataSet.push(this.value);
+            }).get();
+
+            $('#PartReasonSelectedText').val(dataSet);
+        });
+    </script>
+    <style>
+        .sticky {
+            position: sticky;
+            top: 60px;
+        }
+    </style>
+}

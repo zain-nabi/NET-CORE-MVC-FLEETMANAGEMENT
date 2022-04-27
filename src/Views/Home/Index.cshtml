@@ -1,0 +1,226 @@
+﻿@model Triton.FleetManagement.Web.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main id="content" role="main" class="main pointer-event">
+    <!-- Content -->
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="media mb-3">
+                <!-- Avatar -->
+                <div class="avatar avatar-xl avatar-4by3 mr-2">
+                    <img class="avatar-img" src="~/front-dashboard-v1.1/src/assets/svg/brands/guideline.svg" alt="Image Description">
+                </div>
+                <!-- End Avatar -->
+
+                <div class="media-body">
+                    <div class="row">
+                        <div class="col-lg mb-3 mb-lg-0">
+                            <h1 class="page-header-title">Dashboard</h1>
+
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span>Client:</span>
+                                    <a href="#">Triton Fleet Management</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Media -->
+        </div>
+        <div class="card card-body mb-3 mb-lg-5">
+            <div class="row gx-lg-4">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="media">
+                        <div class="media-body">
+                            <h6 class="card-subtitle">Todays bookings</h6>
+                            <span class="card-title h3">
+                                @Model.DashboardModel.BookingsStatisticsModel.TodaysBookings
+                            </span>
+                        </div>
+
+                        <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
+                            <i class="tio-shop"></i>
+                        </span>
+                    </div>
+
+                    <div class="d-lg-none">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 column-divider-sm">
+                    <div class="media">
+                        <div class="media-body">
+                            <h6 class="card-subtitle">Yesterdays bookings</h6>
+                            <span class="card-title h3">
+                                @Model.DashboardModel.BookingsStatisticsModel.YesterdaysBookings
+                            </span>
+                        </div>
+
+                        <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
+                            <i class="tio-website"></i>
+                        </span>
+                    </div>
+
+                    <div class="d-lg-none">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 column-divider-lg">
+                    <div class="media">
+                        <div class="media-body">
+                            <h6 class="card-subtitle">Weekly bookings</h6>
+                            <span class="card-title h3">
+                                @Model.DashboardModel.BookingsStatisticsModel.WeeklyBookings
+                            </span>
+                        </div>
+
+                        <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
+                            <i class="tio-label-off"></i>
+                        </span>
+                    </div>
+
+                    <div class="d-sm-none">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 column-divider-sm">
+                    <div class="media">
+                        <div class="media-body">
+                            <h6 class="card-subtitle">Monthly bookings</h6>
+                            <span class="card-title h3">
+                                @Model.DashboardModel.BookingsStatisticsModel.MonthlyBookings
+                            </span>
+                        </div>
+
+                        <span class="icon icon-sm icon-soft-secondary icon-circle ml-3">
+                            <i class="tio-users-switch"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content container-fluid">
+        <div class="card h-100">
+            <!-- Header -->
+            <div class="card-header">
+                <h5 class="card-header-title">Weekly Bookings Bar Graph</h5>
+            </div>
+            <!-- End Header -->
+            <!-- Body -->
+            <div class="card-body">
+                @if (Model.DashboardModel.BookingsStatisticsModel.WeeklyBookings == 0)
+                {
+                    <div class="content container-fluid">
+                        <div class="row align-items-sm-center py-sm-10">
+                            <div class="col-sm-6">
+                                <div class="text-center text-sm-right mr-sm-4 mb-5 mb-sm-0">
+                                    <img class="w-60 w-sm-100 mx-auto" src="~/front-dashboard-v1.1/src/assets/svg/illustrations/think.svg" alt="Image Description" style="max-width: 15rem;">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4 text-center text-sm-left">
+                                <h1 class="display-4 mb-0">There are no bookings</h1>
+                                <a class="btn btn-primary" href="@Url.Action("Index", "Bookings")">Create Booking</a>
+                            </div>
+                        </div>
+                        <!-- End Row -->
+                    </div>
+                }
+                else
+                {
+                <div class="row mb-4">
+                    <div class="col-sm mb-2 mb-sm-0">
+                    </div>
+
+                    <div class="col-sm-auto align-self-sm-end">
+                        <!-- Legend Indicators -->
+                        <div class="row font-size-sm">
+                            <div class="col-auto">
+                                <span class="legend-indicator bg-primary"></span> Bookings
+                            </div>
+                        </div>
+                        <!-- End Legend Indicators -->
+                    </div>
+                </div>
+                <!-- End Row -->
+                <!-- Bar Chart -->
+                <!-- Bar Chart -->
+                <div class="chartjs-custom">
+                    <canvas class="js-chart" style="height: 20rem;"
+                            data-hs-chartjs-options='{
+            "type": "bar",
+            "data":
+            {
+              "labels": @Html.Raw(Model.barGraphLabels),
+              "datasets": [{
+                      "data": @Html.Raw(Model.barGraphValues),
+                "backgroundColor": "#377dff",
+                "hoverBackgroundColor": "#377dff",
+                "borderColor": "#377dff"
+              }]
+            },
+            "options": {
+              "scales": {
+                "yAxes": [{
+                  "gridLines": {
+                    "color": "#e7eaf3",
+                    "drawBorder": false,
+                    "zeroLineColor": "#e7eaf3"
+                  },
+                  "ticks": {
+                    "beginAtZero": true,
+                    "stepSize": 5,
+                    "fontSize": 12,
+                    "fontColor": "#97a4af",
+                    "fontFamily": "Open Sans, sans-serif",
+                    "padding": 10
+                  }
+                }],
+                "xAxes": [{
+                  "gridLines": {
+                    "display": false,
+                    "drawBorder": false
+                  },
+                  "ticks": {
+                    "fontSize": 12,
+                    "fontColor": "#97a4af",
+                    "fontFamily": "Open Sans, sans-serif",
+                    "padding": 5
+                  },
+                  "categoryPercentage": 0.5,
+                  "maxBarThickness": "55"
+                }]
+              },
+              "cornerRadius": 2,
+              "tooltips":
+              {
+                "hasIndicator": true,
+                "mode": "index",
+                "intersect": true,
+                "yearStamp": false
+              },
+              "hover": {
+                "mode": "nearest",
+                "intersect": true
+              }
+            }
+          }'></canvas>
+                </div>
+                <!-- End Bar Chart -->
+                <!-- End Bar Chart -->
+                }
+            </div>
+            <!-- End Body -->
+        </div>
+    </div>
+</main>
+

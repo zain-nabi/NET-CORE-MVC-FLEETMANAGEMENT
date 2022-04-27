@@ -1,0 +1,37 @@
+﻿@model Triton.FleetManagement.Web.Models.ScaleHourViewModel
+
+@using (Html.BeginForm("Delete", "ScaleHours", FormMethod.Post))
+{
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="editCardNameLabel" class="input-label">Employee</label>
+            @Html.DisplayFor(model => model.ScaleHoursModel.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="form-group">
+            <label for="editCardNameLabel" class="input-label">Cost Scale Hour</label>
+            @Html.DisplayFor(model => model.ScaleHoursModel.CostScaleHour, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="form-group">
+            <label for="editCardNameLabel" class="input-label">Created On</label>
+            @Html.DisplayFor(model => model.ScaleHoursModel.CreatedOn, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="form-group">
+            <label for="editCardNameLabel" class="input-label">Created By</label>
+            @Html.DisplayFor(model => model.ScaleHoursModel.CreatedBy, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+
+        @Html.HiddenFor(model => model.ScaleHoursModel.ScaleHourID)
+        @Html.HiddenFor(model => model.ScaleHoursModel.EmployeeID)
+        @Html.HiddenFor(model => model.ScaleHoursModel.CostScaleHour)
+        @Html.HiddenFor(model => model.ScaleHoursModel.CreatedOn)
+        @Html.HiddenFor(model => model.ScaleHoursModel.CreatedByUserID)
+        @Html.HiddenFor(model => model.ScaleHoursModel.DeletedOn)
+        @Html.HiddenFor(model => model.ScaleHoursModel.DeletedByUserID)
+    </div>
+    <div class="modal-footer">
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-white mr-2" data-dismiss="modal">Cancel</button>
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </div>
+    </div>
+}

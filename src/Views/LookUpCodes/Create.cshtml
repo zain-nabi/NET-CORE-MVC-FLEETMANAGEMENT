@@ -1,0 +1,82 @@
+﻿@model Triton.FleetManagement.Web.Models.LookUpCodeCategoryViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Administration" }, { "HeadingSubTittle", "Lookups" }, { "HeadingSubDetails", "Create" } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <form class="js-validate" id="form1" method="post" asp-action="Create" asp-controller="LookUpCodes">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">@Model.Category</p>
+                </div>
+                <div class="card-body">
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Name</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            <input id="nameTextBox" type="text" class="form-control" required
+                                   data-msg="Please enter a name value." placeholder="Name" aria-label="Current Value" asp-for="LookUpCodes.Name">
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Detail</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            <input id="detailTextBox" type="text" class="form-control" required
+                                   data-msg="Please enter a detail value." placeholder="Detail" aria-label="Current Value" asp-for="LookUpCodes.Detail">
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Sequence</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            <input id="sequenceTextBox" type="text" class="form-control numberValidation" required maxlength="2"
+                                   data-msg="Please enter a sequence value." placeholder="Sequence" aria-label="Current Value" asp-for="LookUpCodes.Sequence">
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <div class="w-100"></div>
+                    <!-- End Form -->
+                    @Html.HiddenFor(model => model.CreatedByUserID)
+                    @Html.HiddenFor(model => model.LookUpCodeCategoryID)
+                    @Html.HiddenFor(model => model.Category)
+                </div>
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a class="btn btn-white" href="@Url.Action("LookUpCodeCategories", "LookUpCodeCategories")">Cancel</a>
+                    <input type="submit" value="Save" class="btn btn-primary ml-2" id="btnSave" />
+                </div>
+                <!-- End Footer -->
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->
+@section scripts {
+    <!-- JS Plugins Init. -->
+    <script>
+        $(document).on('ready',
+            function () {
+                $("#form1").validate({
+
+                    errorClass: 'invalid-input'
+                });
+
+                jQuery.validator.addClassRules('numberValidation',
+                    {
+                        required: true,
+                        number: true
+                    });
+            });
+    </script>
+}

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Triton.Service.Model.TritonFleetManagement.Custom.DocumentVehicleModel>
+
+@{
+    ViewData["Title"] = "ViewDocuments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameRole = "Service Advisor";
+
+
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData)
+        {
+            { "HeadingDetails", "Fleet Management" },
+            { "HeadingSubTittle", "Upload" },
+            { "HeadingSubDetails", "View Images" },
+            { "usernameRole", @usernameRole },
+            { "hrefLink", @Url.Action("InsertDocument", "Bookings", new { bookingsID = Model.FirstOrDefault().BookingID }) },{ "action", "Upload" },
+            { "btnIcon","class= tio-upload-on-cloud" }
+        }' />
+    <!-- Gallery -->
+
+    <div class="content container-fluid">
+        @if (Model.FirstOrDefault().ImgName == "Temp")
+        {
+            <div class="row align-items-sm-center py-sm-10">
+                <div class="col-sm-6">
+                    <div class="text-center text-sm-right mr-sm-4 mb-5 mb-sm-0">
+                        <img class="w-60 w-sm-100 mx-auto" src="~/front-dashboard-v1.1/dist/assets/svg/illustrations/think.svg" alt="Image Description" style="max-width: 15rem;">
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4 text-center text-sm-left">
+                    <h1 class="display-1 mb-0">Images</h1>
+                    <p class="lead">No images to display. Please click upload to add images.</p>
+                    <a class="btn btn-primary" href="@Url.Action("InsertDocument", "Bookings", new { bookingsID = Model.FirstOrDefault().BookingID })">Go to upload</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div id="fancyboxGalleryEg" class="js-fancybox row justify-content-sm-center gx-2"
+                 data-hs-fancybox-options='{
+        "selector": "#fancyboxGalleryEg .js-fancybox-item",
+         "transitionEffectCustom": {"onShow": "fadeIn","onHide": "fadeOut"}
+        }'>
+                <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title" style="font-weight:bold">Media</p>
+                    </div>
+                    <div class="card-body justify-content-sm-center">
+                        <div class="row">
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-sm-2">
+                                    <div class="card card-sm">
+                                        <img class="card-img-top" src="data:image/jpg;base64, @item.ImgDataStr" />
+                                        <div class="card-body justify-content-sm-center">
+                                            <a class="js-fancybox-item" href="javascript:;"
+                                               data-src="data:image/jpg;base64, @item.ImgDataStr"
+                                               data-caption="Image" width="1" height="100">
+                                                <i class="tio-visible-outlined mr-1"></i> View
+                                            </a>
+                                            <div class="float-right">
+                                                <a class="text-danger" href="@Url.Action("DeleteDocument", "Bookings", new { vehicleDocumentId = item.VehicleDocumentID, bookingId = item.BookingID})"><i class="tio-delete-outlined mr-1"></i>Delete</a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
+</main>
+

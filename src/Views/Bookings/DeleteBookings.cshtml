@@ -1,0 +1,150 @@
+﻿@model Triton.FleetManagement.Web.Models.BookingsViewModel
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameRole = "Service Advisor";
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Administration" }, { "HeadingSubTittle", "Booking Details" }, { "HeadingSubDetails", Model.BookingDetailsByID.CustomerName },{ "usernameRole", @usernameRole } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <form class="js-validate" id="form1" method="post" asp-action="DeleteBookings" asp-controller="Bookings">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">Delete Booking</p>
+                </div>
+                <div class="card-body">
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Customer:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.BookingDetailsByID.CustomerName)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Registration Number:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.BookingDetailsByID.RegistrationNumber)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Created On:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @*@Html.DisplayFor(model => model.BookingDetailsByID.CreatedOn)*@
+                            <span class="d-block h5 mb-0">@Model.BookingDetailsByID.CreatedOn.ToString("dd MMMM yyyy")</span>
+                            <span class="d-block font-size-sm">@Model.BookingDetailsByID.CreatedOn.ToString("hh:mm:tt")</span>
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Estimated Arrival:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @*@Html.DisplayFor(model => model.BookingDetailsByID.EstimatedArrival)*@
+                            <span class="d-block h5 mb-0">@Model.BookingDetailsByID.EstimatedArrival.ToString("dd MMMM yyyy")</span>
+                            <span class="d-block font-size-sm">@Model.BookingDetailsByID.EstimatedArrival.ToString("hh:mm:tt")</span>
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Actual Arrival:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @if (Model.BookingDetailsByID.ActualArrival.ToShortDateString() == "0001/01/01")
+                            {
+                                <span>NA</span>
+                            }
+                            else
+                            {
+                                <span class="d-block h5 mb-0">@Model.BookingDetailsByID.ActualArrival.ToString("dd MMMM yyyy")</span>
+                                <span class="d-block font-size-sm">@Model.BookingDetailsByID.ActualArrival.ToString("hh:mm:tt")</span>
+                                @*@Html.DisplayFor(model => model.BookingDetailsByID.ActualArrival)*@
+                            }
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Order Number</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.BookingDetailsByID.OrderNumber)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Milage:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.BookingDetailsByID.MileAge)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Mileage Hour:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.BookingDetailsByID.MileAgeHour)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Mechanic Status:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.BookingDetailsByID.Name)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Notes:</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.BookingDetailsByID.Notes)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- End Input -->
+                    <div class="w-100"></div>
+                    <!-- End Form -->
+                    <input type="hidden" value="@Model.BookingDetailsByID.BookingsID" asp-for="@Model.BookingDetailsByID.BookingsID" name="BookingsID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.BookingsCustomerID" asp-for="@Model.BookingDetailsByID.BookingsCustomerID" name="BookingsCustomerID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.VehicleID" asp-for="@Model.BookingDetailsByID.VehicleID" name="VehicleID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.ServiceCategoryTypesLCID" asp-for="@Model.BookingDetailsByID.ServiceCategoryTypesLCID" name="ServiceCategoryTypesLCID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.MileAgeOrHourLCID" asp-for="@Model.BookingDetailsByID.MileAgeOrHourLCID" name="MileAgeOrHourLCID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.MileAge" asp-for="@Model.BookingDetailsByID.MileAge" name="MileAge" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.MileAgeHour" asp-for="@Model.BookingDetailsByID.MileAgeHour" name="MileAgeHour" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.EstimatedArrival" asp-for="@Model.BookingDetailsByID.EstimatedArrival" name="EstimatedArrival" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.ActualArrival" asp-for="@Model.BookingDetailsByID.ActualArrival" name="ActualArrival" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.Authorisation" asp-for="@Model.BookingDetailsByID.Authorisation" name="Authorisation" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.Notes" asp-for="@Model.BookingDetailsByID.Notes" name="Notes" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.CreatedOn" asp-for="@Model.BookingDetailsByID.CreatedOn" name="CreatedOn" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.CreatedByUserID" asp-for="@Model.BookingDetailsByID.CreatedByUserID" name="CreatedByUserID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.DeletedOn" asp-for="@Model.BookingDetailsByID.DeletedOn" name="DeletedOn" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.DeletedByUserID" asp-for="@Model.BookingDetailsByID.DeletedByUserID" name="DeletedByUserID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.QuotationsLCID" asp-for="@Model.BookingDetailsByID.QuotationsLCID" name="QuotationsLCID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.BranchID" asp-for="@Model.BookingDetailsByID.BranchID" name="BranchID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.OrderNumber" asp-for="@Model.BookingDetailsByID.OrderNumber" name="OrderNumber" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.isJobCard" asp-for="@Model.BookingDetailsByID.isJobCard" name="isJobCard" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.StatusLCID" asp-for="@Model.BookingDetailsByID.StatusLCID" name="StatusLCID" />
+                    <input type="hidden" value="@Model.BookingDetailsByID.MechanicEmployeeID" asp-for="@Model.BookingDetailsByID.MechanicEmployeeID" name="MechanicEmployeeID" />
+                </div>
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a class="btn btn-white" href="@Url.Action("GetAllBookings", "Bookings")">Cancel</a>
+                    <input type="submit" value="Delete" class="btn btn-soft-danger ml-2" id="btnSave" />
+                </div>
+                <!-- End Footer -->
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->

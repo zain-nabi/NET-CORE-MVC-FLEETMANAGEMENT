@@ -1,0 +1,31 @@
+﻿@model Triton.FleetManagement.Web.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<main id="content" role="main">
+    <!-- Hero Section -->
+    <div class="d-flex">
+        <div class="container d-flex align-items-center vh-100">
+            <div class="row justify-content-md-center flex-md-grow-1 text-center">
+                <div class="col-md-9 col-lg-6">
+                    @if (Model.StatusCode == 403)
+                    {
+                        <img class="img-fluid mb-2" src="~/front-dashboard-v1.1/dist/assets/svg/illustrations/error-number-403.svg" alt="SVG Illustration">
+
+                        <h1 class="h2">Authorization</h1>
+                        <p>You do not have access to view this page.  Contact the HR Administrator for access</p>
+                    }
+                    else
+                    {
+                        <img class="img-fluid mb-2" src="~/front-dashboard-v1.1/dist/assets/svg/illustrations/error-number-404.svg" alt="SVG Illustration">
+
+                        <h1 class="h2">404</h1>
+                        <p>Oops! Looks like something has gone wrong</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Hero Section -->
+</main>

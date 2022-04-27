@@ -1,0 +1,136 @@
+﻿@model Triton.Service.Model.TritonFleetManagement.Custom.CustomerModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // var usernameRole = "Admin Manager";
+}
+
+<main id="content" role="main" class="main">
+    <!-- Breadcrumb Section -->
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Fleet Management" }, { "HeadingSubTittle", "Customer" }, { "HeadingSubDetails", "Update" }, { "hrefLink", Url.Action("Index", "Customer") } }' />
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <!-- Card -->
+                <div>
+                    <div class="card">
+                        <!-- Body -->
+                        <div class="card-body">
+                            @if (Model.ErrorMessage != null)
+                            {
+                                <div class="alert alert-soft-danger alert-dismissible fade show" role="alert">
+                                    <strong>@Model.ErrorMessage</strong>
+
+                                </div>
+                            }
+                            <!-- Step Form -->
+                        <form method="post" asp-action="DeleteCustomer" asp-controller="Customer" class="js-step-form js-validate">
+
+
+                            <!-- Form Group -->
+                            <div class="row form-group">
+                                <label for="validationPostalCodeLabel" class="col-sm-2 col-form-label input-label">Account Status Type</label>
+
+                                <div class="col-sm-4">
+                                    <div class="js-form-message js-focus-state">
+                                        @Html.DropDownListFor(m => m.Customer.AccountStatusTypeLCID, new SelectList(Model.AccountStatusType, "LookUpCodeID", "Name"), new { @class = "js-select2-custom" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+
+                            <hr />
+                            <div class="d-flex justify-content-end ml-auto">
+                                <a class="btn btn-white" href="@Url.Action("GetAllCustomers", "Customer")">Cancel</a>
+                                <span class="mx-2"></span>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+
+                            @Html.HiddenFor(x => x.Customer.CustomerID)
+                            @Html.HiddenFor(x => x.Customer.Name)
+                            @Html.HiddenFor(x => x.Customer.VatRegistration)
+                            @Html.HiddenFor(x => x.Customer.CreditLimit)
+                            @Html.HiddenFor(x => x.Customer.LoyaltySpend)
+                            @Html.HiddenFor(x => x.Customer.LoyaltyStatusLCID)
+                            @Html.HiddenFor(x => x.Customer.AccountStatusTypeLCID)
+                            @Html.HiddenFor(x => x.Customer.CustomerTypeLCID)
+                            @Html.HiddenFor(x => x.Customer.PhysicalAddress1)
+                            @Html.HiddenFor(x => x.Customer.PhysicalAddress2)
+                            @Html.HiddenFor(x => x.Customer.PhysicalSuburb)
+                            @Html.HiddenFor(x => x.Customer.PhysicalPostalCode)
+                            @Html.HiddenFor(x => x.Customer.PostalAddress1)
+                            @Html.HiddenFor(x => x.Customer.PostalAddress2)
+                            @Html.HiddenFor(x => x.Customer.PostalSuburb)
+                            @Html.HiddenFor(x => x.Customer.PostalCode)
+                            @Html.HiddenFor(x => x.Customer.CreatedOn)
+                            @Html.HiddenFor(x => x.Customer.CreatedByUserID)
+                            @Html.HiddenFor(x => x.Customer.CompanyID)
+                            @Html.HiddenFor(x => x.Customer.CompanyRegistration)
+
+
+                            @*@Html.HiddenFor(x => x.Customer.CreatedOn)
+
+                            @Html.HiddenFor(x => x.Customer.LoyaltySpend)
+                            @Html.HiddenFor(x => x.Customer.LoyaltyStatusLCID)
+                            @Html.HiddenFor(x => x.Customer.AccountStatusTypeLCID)
+                            @Html.HiddenFor(x => x.Customer.CustomerTypeLCID)
+                            @Html.HiddenFor(x => x.Customer.LoyaltyStatusLCID)
+                            @Html.HiddenFor(x => x.SelectedAccountStatusType)
+                            @Html.HiddenFor(x => x.SelectedCategoryType)
+                            @Html.HiddenFor(x => x.SelectedLoyaltyStatus)*@
+                        </form>
+
+                        </div>
+                        <!-- End Card -->
+                    </div>
+
+
+                    <!-- End Card -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End Row -->
+    </div>
+    <!-- End Row -->
+    </div>
+    <!-- End Content Section -->
+</main>
+@section scripts {
+    <!-- JS Implementing Plugins -->
+    <script src="~/front-dashboard-v1.1/dist/assets/vendor/hs-step-form/dist/hs-step-form.min.js"></script>
+    <script src="~/front-dashboard-v1.1/dist/assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <!-- JS Front -->
+    <script src="~/front-dashboard-v1.1/src/assets/js/hs.validation.js"></script>
+
+    <script>
+        $(document).on('ready', function () {
+            // INITIALIZATION OF FORM VALIDATION
+            // =======================================================
+            $('.js-validate').each(function () {
+                $.HSCore.components.HSValidation.init($(this));
+            });
+
+
+            // INITIALIZATION OF STEP FORM
+            // =======================================================
+            $('.js-step-form').each(function () {
+                var stepForm = new HSStepForm($(this), {
+                    finish: function () {
+                        $("#validationFormProgress").hide();
+                        $("#validationFormContent").hide();
+                        $("#validationFormSuccessMessage").show();
+                    }
+                }).init();
+            });
+        });
+    </script>
+
+}

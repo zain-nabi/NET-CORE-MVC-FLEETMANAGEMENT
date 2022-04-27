@@ -1,0 +1,276 @@
+﻿@model IEnumerable<Triton.Service.Model.TritonFleetManagement.Custom.BookingsModel>
+@using Newtonsoft.Json;
+
+@{
+    ViewData["Title"] = "GetAllCustomers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int height;
+    var usernameRole = "Service Advisor";
+
+}
+
+<main id="content" role="main" class="main">
+    <!-- Content -->
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Fleet Management" },{ "HeadingSubTittle", "Vehicle Bookings" },{ "HeadingSubDetails", "Vehicle Bookings" },{ "hrefLink", @Url.Action("Index", "Customer") },{ "usernameRole", @usernameRole } }' />
+    <div class="content container-fluid my-n9">
+        <div class="card">
+            <!-- Header -->
+            <div class="card-header">
+                <div class="row justify-content-between align-items-center flex-grow-1">
+                    <div class="col-sm-6 col-md-4 mb-3 mb-sm-0">
+                        <form>
+
+                            <div class="col-3 mb-5">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="tio-date-range mr-1"></i></span>
+                                    </div>
+                                    @*@Html.TextBox("DateRange", new { id = "js-daterangepicker-predefined", @class = "btn btn-white dropdown-toggle", style = "width:300px;", @required = "required" })*@
+                                    <input id="js-daterangepicker-predefined" name="daterange" type="text" class="btn btn-white dropdown-toggle" style="width:300px;" required="required">
+                                </div>
+
+                            </div>
+                            <div class="col-auto mb-2">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+
+
+
+                            <!-- Search -->
+                            <div class="input-group input-group-merge input-group-flush">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="tio-search"></i>
+                                    </div>
+                                </div>
+                                <input id="datatableSearch" type="search" class="form-control" placeholder="Filter results" aria-label="Filter results">
+                            </div>
+                            <!-- End Search -->
+                        </form>
+                    </div>
+                </div>
+                <!-- End Row -->
+            </div>
+            <!-- End Header -->
+            <!-- Table -->
+            @if (Model.Count() >= 1)
+            {
+                height = 150;
+            }
+            else
+            {
+                height = 0;
+            }
+            <div class="table-responsive datatable-custom">
+                <div id="datatable_wrapper" class="dataTables_wrapper">
+                    <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table" style="margin-bottom: @(height+"px");"
+                           data-hs-datatables-options='{
+                            "columnDefs": [ {
+                        "targets": 5,
+                        "orderable": false
+                     }],
+                     "order": [],
+                     "info": {
+                       "totalQty": "#datatableWithPaginationInfoTotalQty"
+                     },
+                     "search": "#datatableSearch",
+                     "entries": "#datatableEntries",
+                     "pageLength": 8,
+                     "isResponsive": false,
+                     "isShowPaging": false,
+                     "pagination": "datatablePagination"
+                   }'>
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Registration Number</th>
+                                <th>Customer</th>
+                                <th>Fleet Number</th>
+                                <th>Vehicle Make</th>
+                                <th>Vehicle Model</th>
+                                <th>Vehicle Year</th>
+                                <th>Vin Number</th>
+                                <th>Engine Number</th>
+                                <th>License Number</th>
+                                <th>Status</th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td class="align-middle">
+                                        <a class="d-flex align-items-center">
+                                            <div class="avatar avatar-soft-primary avatar-circle">
+                                                <span class="avatar-initials">@item.Vehicle.RegistrationNumber.Substring(0, 1)</span>
+                                            </div>
+                                            <div class="ml-3">
+                                                <span class="d-block h5  mb-0">@item.Vehicle.RegistrationNumber</span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>@item.Customer.Name</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>@item.Vehicle.FleetNumber</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>@item.LookupCodeModel.Name</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>@item.LookupCodeVehicleClass.Name</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>@item.Vehicle.VehicleYear</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>@item.Vehicle.VinNumber</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>@item.Vehicle.EngineNumber</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span>License Number</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="media align-items-center">
+                                            <span class="d-flex align-items-center">
+                                                @{
+                                                    var activeText = "Inactive";
+                                                    var color = "bg-danger";
+                                                    //var btnText = "Activate";
+                                                    //var btnRecycleIcon = "fal fa-trash-undo-alt mr-1";
+
+                                                    if (item.Bookings.DeletedByUserID == 0)
+                                                    {
+
+                                                        activeText = "Active";
+                                                        color = "bg-success";
+                                                        //btnText = "De-activate";
+                                                       //btnRecycleIcon = "fal fa-trash-alt mr-1";
+                                                    }
+                                                }
+
+                                                <span class="legend-indicator @color mr-2">
+                                                </span>
+                                                <small class="d-block">@activeText</small>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    @*<td class="align-middle">
+                                            @if (item.Bookings.CreatedOn != null)
+                                            {
+                                                <span class="d-block h5 mb-0">@item.Bookings.CreatedOn.ToString("dd MMMM yyyy")</span>
+                                                <span class="d-block font-size-sm">@item.Bookings.CreatedOn.ToString("hh:mm:tt")</span>
+
+                                            }
+                                            else
+                                            {
+                                                <small class="d-block">NA</small>
+                                            }
+
+
+                                        </td>
+                                        <td class="align-middle">
+                                            @if (item.Bookings.EstimatedArrival != null)
+                                            {
+                                                <span class="d-block h5 mb-0">@item.Bookings.EstimatedArrival.Value.ToString("dd MMMM yyyy")</span>
+                                                <span class="d-block font-size-sm">@item.Bookings.EstimatedArrival.Value.ToString("hh:mm:tt")</span>
+
+                                            }
+                                            else
+                                            {
+                                                <small class="d-block">NA</small>
+                                            }
+
+
+                                        </td>*@
+
+
+                                    <td class="align-middle">
+                                        <div class="hs-unfold">
+                                            <a class="js-hs-unfold-invoker btn btn-sm btn-white" href="javascript:;" data-hs-unfold-options="{
+                                            &quot;target&quot;: &quot;#@item.Bookings.BookingsID&quot;,
+                                            &quot;type&quot;: &quot;css-animation&quot;
+                                        }" data-hs-unfold-target="#@item.Bookings.BookingsID" data-hs-unfold-invoker="">
+                                                Actions <i class="tio-chevron-down ml-1"></i>
+                                            </a>
+
+                                            <div id="@item.Bookings.BookingsID" class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm dropdown-menu-right hs-unfold-content-initialized hs-unfold-css-animation animated hs-unfold-hidden" data-hs-target-height="145.078" data-hs-unfold-content="" data-hs-unfold-content-animation-in="slideInUp" data-hs-unfold-content-animation-out="fadeOut" style="animation-duration: 300ms;">
+                                                <a class="dropdown-item" href="@Url.Action("InsertDocument", "Bookings", new { vehicleId = @item.Bookings.VehicleID})"><i class="fal fa-edit mr-1"></i>Capture Photos</a>
+                                                <a class="dropdown-item" href="@Url.Action("ViewDocuments", "Bookings", new { vehicleId = @item.Bookings.VehicleID})"><i class="fal fa-edit mr-1"></i>View Photos</a>
+                                                @*<a class="dropdown-item" href="@Url.Action("DeleteCustomer", "Customer", new { customerID = @item.Customer.CustomerID})"><i class="fal fa-trash-alt mr-1"></i>Account Status Type</a>
+        <a class="dropdown-item" href="@Url.Action("Create", "Vehicle", new { customerID = @item.Customer.CustomerID})"><i class="fal fa-list-alt mr-1"></i>Add Vehicle</a>
+        <a class="dropdown-item" href="@Url.Action("VehiclePerCustomer", "Vehicle", new { customerID = @item.Customer.CustomerID})"><i class="fal fa-eye mr-1"></i>View Vehicles</a>*@
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- End Table -->
+            <!-- Footer -->
+            <div class="card-footer">
+                <!-- Pagination -->
+                <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
+                    <!--<div class="col-sm mb-2 mb-sm-0">
+                        <div class="d-flex justify-content-center justify-content-sm-start align-items-center">
+                            <span class="mr-2">Showing:</span>-->
+                    <!-- Select -->
+                    <!--<select id="datatableEntries" class="js-select2-custom"
+                              data-hs-select2-options='{
+                      "minimumResultsForSearch": "Infinity",
+                      "customClass": "custom-select custom-select-sm custom-select-borderless",
+                      "dropdownAutoWidth": true,
+                      "width": true
+                    }'>
+                          <option value="4">4</option>
+                          <option value="6">6</option>
+                          <option value="8" selected>8</option>
+                          <option value="12">12</option>
+                      </select>-->
+                    <!-- End Select -->
+                    <!--<span class="text-secondary mr-2">of</span>-->
+                    <!-- Pagination Quantity -->
+                    <!--<span id="datatableWithPaginationInfoTotalQty"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-auto">
+                        <div class="d-flex justify-content-center justify-content-sm-end">-->
+                    <!-- Pagination -->
+                    <!--<nav id="datatablePagination" aria-label="Activity pagination"></nav>
+                        </div>
+                    </div>-->
+                </div>
+                <!-- End Pagination -->
+            </div>
+            <!-- End Footer -->
+
+        </div>
+    </div>
+</main>

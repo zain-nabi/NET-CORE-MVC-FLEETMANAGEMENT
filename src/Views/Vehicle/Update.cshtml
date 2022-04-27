@@ -1,0 +1,430 @@
+﻿@model Triton.FleetManagement.Web.Models.VehicleViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameRole = "Service Advisor";
+}
+
+
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Administration" }, { "HeadingSubTittle", "Vehicles" }, { "HeadingSubDetails", "Edit" },{ "usernameRole", @usernameRole } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <div class="page-header">
+            <div class="js-nav-scroller hs-nav-scroller-horizontal">
+                <span class="hs-nav-scroller-arrow-prev" style="display: none;">
+                    <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                        <i class="tio-chevron-left"></i>
+                    </a>
+                </span>
+
+                <span class="hs-nav-scroller-arrow-next" style="display: none;">
+                    <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                        <i class="tio-chevron-right"></i>
+                    </a>
+                </span>
+
+                <ul class="nav nav-tabs page-header-tabs" id="projectsTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Vehicle</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("AuditTrail", "Vehicle", new { vehicleID = Model.VehicleID})">Audit</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- End Nav -->
+        </div>
+        <form class="js-validate" id="form1" method="post" asp-action="Update" asp-controller="Vehicle">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">Edit Vehicle</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="RegistrationLabel" class="input-label">Registration Number</label>
+                                <div class="js-form-message mb-3">
+                                    @if (Model.CarExist == "True")
+                                    {
+                                        <input id="registrationTextBox" type="text" class="form-control" required
+                                               data-msg="Please enter a registration number." placeholder="Registration number" aria-label="Current Value" asp-for="VehicleDetailsByID.RegistrationNumber">
+                                        <span style="color:#ed4c78;font-size: 80%;" id="CellError">@Model.CarExistMessage</span>
+                                    }
+                                    else
+                                    {
+                                        <input id="registrationTextBox" type="text" class="form-control" required
+                                               data-msg="Please enter a registration number." placeholder="Registration number" aria-label="Current Value" asp-for="VehicleDetailsByID.RegistrationNumber">
+                                    }
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="FleetNumberLabel" class="input-label">Fleet Number</label>
+                                <div class="js-form-message mb-3">
+                                    <input id="fleetTextBox" type="text" class="form-control" required
+                                           data-msg="Please enter a fleet number." placeholder="Fleet number" aria-label="Current Value" asp-for="VehicleDetailsByID.FleetNumber">
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="vinNumberLabel" class="input-label">VIN Number</label>
+                                <div class="js-form-message mb-3">
+                                    <input id="vinTextBox" type="text" class="form-control " required
+                                           data-msg="Please enter a vin number." placeholder="VIN number" aria-label="Current Value" asp-for="VehicleDetailsByID.VinNumber">
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="engineNumberLabel" class="input-label">Engine Number</label>
+                                <div class="js-form-message mb-3">
+                                    <input id="engineNumberTextBox" type="text" class="form-control " required
+                                           data-msg="Please enter a engine number." placeholder="Engine number" aria-label="Current Value" asp-for="VehicleDetailsByID.EngineNumber">
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="vehicleYearLabel" class="input-label">Vehicle Year</label>
+                                <div class="js-form-message mb-3">
+                                    <input id="vehicleYearTextBox" type="text" class="form-control numberValidation" maxlength="4" required
+                                           data-msg="Please enter a vehicle year." placeholder="Vehicleyear" aria-label="Current Value" asp-for="VehicleDetailsByID.VehicleYear">
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="gvmLabel" class="input-label">GVM</label>
+                                <div class="js-form-message mb-3">
+                                    <input id="gvmTextBox" type="text" class="form-control " required
+                                           data-msg="Please enter a gross vehicle mass." placeholder="GVM" aria-label="Current Value" asp-for="VehicleDetailsByID.GVM">
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="serviceIntervalLabel" class="input-label">Service Interval</label>
+                                <div class="js-form-message mb-3">
+                                    @*@Html.DropDownListFor(m => m.Vehicle.Vehicles.ServiceIntervalLCID, new SelectList(Model.ServiceIntervals, "LookUpCodeID", "Name"), new { @class = "js-select2-custom custom-select", data_placeholder = "Choose items" })*@
+
+                                    <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="VehicleDetailsByID.ServiceIntervalLCID" asp-items="Model.ServiceIntervals" required
+                                            data-msg="Please select a service interval."
+                                            data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Service Interval"
+                                                }'>
+                                        <option label="empty"></option>
+                                    </select>
+                                    <!-- End Select2 -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="vehicleMakeLabel" class="input-label">Vehicle Make</label>
+                                <div class="js-form-message mb-3">
+                                    @*@Html.DropDownListFor(m => m.Vehicle.Vehicles.VehicleBrandLCID, new SelectList(Model.VehicleBrands, "LookUpCodeID", "Name"), new { @class = "js-select2-custom custom-select", data_placeholder = "Choose items" })*@
+
+                                    <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="VehicleDetailsByID.VehicleBrandLCID" asp-items="Model.VehicleBrands" required
+                                            data-msg="Please select a vehicle make."
+                                            data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Vehicle Make"
+                                                }'>
+                                        <option label="empty"></option>
+                                    </select>
+                                    <!-- End Select2 -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="vehicleModelLabel" class="input-label">Vehicle Model</label>
+                                <div class="js-form-message mb-3">
+                                    @*@Html.DropDownListFor(m => m.Vehicle.Vehicles.VehicleClassLCID, new SelectList(Model.VehicleClasses, "LookUpCodeID", "Name"), new { @class = "js-select2-custom custom-select", data_placeholder = "Choose items" })*@
+
+                                    <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="VehicleDetailsByID.VehicleClassLCID" asp-items="Model.VehicleClasses" required
+                                            data-msg="Please select a vehicle model."
+                                            data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Vehicle Model"
+                                                }'>
+                                        <option label="empty"></option>
+                                    </select>
+                                    <!-- End Select2 -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="licenseNumberLabel" class="input-label">License Number</label>
+                                <div class="js-form-message mb-3">
+                                    <input id="licenseNumberTextBox" type="text" class="form-control" required
+                                           data-msg="Please enter a license number." placeholder="License number" aria-label="Current Value" asp-for="VehicleDetailsByID.LicenseNumber">
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="licenseExpiaryLabel" class="input-label">License Expiry Date</label>
+                                <div class="js-form-message mb-3">
+                                    <!-- Flatpickr -->
+                                    <input type="text" class="js-flatpickr form-control flatpickr-custom" placeholder="Select dates" asp-for="VehicleDetailsByID.Expiry"
+                                           data-hs-flatpickr-options='{
+                                                "dateFormat": "Y/m/d"
+                                            }'>
+                                    <!-- End Flatpickr -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="tailLiftServiceDateLabel" class="input-label">Customer</label>
+                                <div class="js-form-message mb-3">
+                                    <select class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="VehicleDetailsByID.CustomerID" asp-items="Model.Customers" required
+                                            data-msg="Please select a customer."
+                                            data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select a Customer"
+                                                }'>
+                                        <option label="empty"></option>
+                                    </select>
+                                    <!-- End Select2 -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="TailLiftLabel" class="input-label">Tail Lift</label>
+                                <div class="js-form-message mb-3">
+                                    @*@Html.CheckBox("VehicleDetailsByID.TailLift", new { id = "VehicleTailLiftCheck" })*@
+                                    <!-- Checkbox -->
+                                    <div class="custom-control custom-checkbox-switch mr-2">
+                                        <input type="checkbox" id="VehicleTailLiftCheck" class="custom-control-input custom-checkbox-switch-input" asp-for="VehicleDetailsByID.TailLift">
+                                        <label class="custom-checkbox-switch-label btn" for="VehicleTailLiftCheck">
+                                            <span class="custom-checkbox-switch-default">
+                                                <i class="fas fa-truck-loading"></i> No Tail Lift
+                                            </span>
+                                            <span class="custom-checkbox-switch-active">
+                                                <i class="tio-done mr-1"></i> Tail Lift Selected
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <!-- End Checkbox -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+
+                        <div class="col-sm-6 tailLiftDescription">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="tailLiftDescLabel" class="input-label">Tail Lift Description</label>
+                                <div class="js-form-message mb-3">
+                                    <input id="tailLiftDescTextBox" type="text" class="form-control" required
+                                           data-msg="Please enter a tail lift description." placeholder="Tail lift description" aria-label="Current Value" asp-for="VehicleDetailsByID.tlsDescription">
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6 tailLiftServiceDate">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="tailLiftServiceDateLabel" class="input-label">Tail Lift Service Date</label>
+                                <div class="js-form-message mb-3">
+                                    <!-- Flatpickr -->
+                                    <input id="TailLiftSerDateDDL" type="text" class="js-flatpickr form-control flatpickr-custom" placeholder="Select dates" required data-msg="Please select a service date" asp-for="VehicleDetailsByID.tlsServiceDate"
+                                           data-hs-flatpickr-options='{
+                                                "dateFormat": "Y/m/d"
+                                            }'>
+                                    <!-- End Flatpickr -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+
+
+                        <div class="col-sm-6 tailLiftType">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label for="tailLiftTypeLabel" class="input-label">Tail Lift Type</label>
+                                <div class="js-form-message mb-3">
+                                    @*@Html.DropDownListFor(m => m.Vehicle.Vehicles.TailLiftTypeLCID, new SelectList(Model.TailLiftTypes, "LookUpCodeID", "Name"), new { @class = "js-select2-custom custom-select", data_placeholder = "Choose items" })*@
+
+                                    <select id="TailLiftTypeDDL" class="js-select2-custom custom-select" size="1" style="opacity: 0;" asp-for="VehicleDetailsByID.TailLiftTypeLCID" asp-items="Model.TailLiftTypes" required
+                                            data-msg="Please select a tail lift type."
+                                            data-hs-select2-options='{
+                                                "minimumResultsForSearch": "Infinity",
+                                                "placeholder": "Select Tail Lift Type"
+                                                }'>
+                                        <option label="empty"></option>
+                                    </select>
+                                    <!-- End Select2 -->
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+                        </div>
+                    </div>
+
+                    <div class="w-100"></div>
+                    <!-- End Form -->
+                    @Html.HiddenFor(model => model.VehicleDetailsByID.VehicleID)
+                    @Html.HiddenFor(model => model.VehicleDetailsByID.CustomerID)
+                </div>
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a class="btn btn-white" href="@Url.Action("Search", "Vehicle")">Cancel</a>
+                    <input type="submit" value="Save" class="btn btn-primary ml-2" id="btnSave" />
+                </div>
+                <!-- End Footer -->
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->
+@section scripts {
+    <!-- JS Plugins Init. -->
+    <script>
+        $(document).on('ready',
+            function () {
+                if ($("#VehicleTailLiftCheck").is(":checked"))
+                {
+                    $('.tailLiftDescription').show();
+                    $('.tailLiftServiceDate').show();
+                    $('.tailLiftType').show();
+                } else
+                {
+                    $('.tailLiftDescription').hide();
+                    $('.tailLiftServiceDate').hide();
+                    $('.tailLiftType').hide();
+                    document.getElementById("TailLiftTypeDDL").removeAttribute("required");
+                    document.getElementById("TailLiftSerDateDDL").removeAttribute("required");
+                    document.getElementById("tailLiftDescTextBox").removeAttribute("required");
+                }
+                $("#form1").validate({
+
+                    errorClass: 'invalid-input'
+                });
+
+                jQuery.validator.addClassRules('numberValidation',
+                    {
+                        required: true,
+                        number: true
+                    });
+            });
+    </script>
+    <script type="text/javascript">
+        $("#VehicleTailLiftCheck").click(function () {
+            if ($(this).is(":checked")) {
+                $('.tailLiftDescription').show();
+                $('.tailLiftServiceDate').show();
+                $('.tailLiftType').show();
+                $("#TailLiftTypeDDL").attr('required', '');
+                $("#TailLiftSerDateDDL").attr('required', '');
+                $("#tailLiftDescTextBox").attr('required', '');
+
+            } else {
+                $('.tailLiftDescription').hide();
+                $('.tailLiftServiceDate').hide();
+                $('.tailLiftType').hide();
+                document.getElementById("TailLiftTypeDDL").removeAttribute("required");
+                document.getElementById("TailLiftSerDateDDL").removeAttribute("required");
+                document.getElementById("tailLiftDescTextBox").removeAttribute("required");
+            }
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

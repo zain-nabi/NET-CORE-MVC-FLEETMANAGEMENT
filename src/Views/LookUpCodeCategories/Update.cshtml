@@ -1,0 +1,48 @@
+﻿@model Triton.FleetManagement.Web.Models.LookUpCodeCategoryViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Administration" }, { "HeadingSubTittle", "Lookup Code Category" }, { "HeadingSubDetails", "Update" } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <form class="js-validate" method="post" asp-action="Update" asp-controller="LookUpCodeCategories">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">Update Lookup Category</p>
+                </div>
+                <div class="card-body">
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Category</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            <input id="nameTextBox" type="text" class="form-control stringValidation" required
+                                   data-msg="Please enter a category value." placeholder="Category" aria-label="Current Value" asp-for="LookUpCodeCategories.Category">
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <div class="w-100"></div>
+                    <!-- End Form -->
+                    @Html.HiddenFor(model => model.LookUpCodeCategories.LookUpCodeCategoryID)
+                    @Html.HiddenFor(model => model.LookUpCodeCategories.CreatedByUserID)
+                    @Html.HiddenFor(model => model.LookUpCodeCategories.CreatedOn)
+                    @Html.HiddenFor(model => model.LookUpCodeCategories.DeletedByUserID)
+                    @Html.HiddenFor(model => model.LookUpCodeCategories.DeletedOn)
+                </div>
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a class="btn btn-white" href="@Url.Action("LookUpCodeCategories", "LookUpCodeCategories")">Cancel</a>
+                    <input type="submit" value="Save" class="btn btn-primary ml-2" id="btnSave" />
+                </div>
+                <!-- End Footer -->
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->

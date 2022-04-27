@@ -1,0 +1,116 @@
+﻿@model Triton.FleetManagement.Web.Models.ScaleHourViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- ========== MAIN ========== -->
+<main id="content" role="main" class="main">
+    <partial name="_LayoutHeader" view-data='@new ViewDataDictionary(ViewData) { { "HeadingDetails", "Fleet Management" }, { "HeadingSubTittle", "Cost Scales" }, { "HeadingSubDetails", "Update" } }' />
+
+    <!-- End Breadcrumb Section -->
+    <!-- Content Section -->
+    <div class="content container-fluid my-n9">
+        <div class="page-header">
+            <div class="js-nav-scroller hs-nav-scroller-horizontal">
+                <span class="hs-nav-scroller-arrow-prev" style="display: none;">
+                    <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                        <i class="tio-chevron-left"></i>
+                    </a>
+                </span>
+
+                <span class="hs-nav-scroller-arrow-next" style="display: none;">
+                    <a class="hs-nav-scroller-arrow-link" href="javascript:;">
+                        <i class="tio-chevron-right"></i>
+                    </a>
+                </span>
+
+                <ul class="nav nav-tabs page-header-tabs" id="projectsTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Cost Scale</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("AuditTrail", "ScaleHours", new { employeeID = Model.employeeID})">Audit</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- End Nav -->
+        </div>
+        <form class="js-validate" id="form1" method="post" asp-action="Update" asp-controller="ScaleHours">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">Update Cost Scale</p>
+                </div>
+                <div class="card-body">
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Employee</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            @Html.DisplayFor(model => model.ScaleHoursModel.EmployeeName)
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <!-- Input -->
+                    <div class="row form-group">
+                        <label class="col-sm-3 col-form-label input-label">Cost Scale Hour</label>
+                        <div class="col-sm-4 js-form-message mb-3">
+                            <div class="js-quantity-counter input-group-quantity-counter">
+                                <input required type="number" class="js-result form-control input-group-quantity-counter-control" asp-for="ScaleHoursModel.CostScaleHour">
+
+                                <div class="input-group-quantity-counter-toggle">
+                                    <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
+                                        <i class="tio-remove"></i>
+                                    </a>
+                                    <a class="js-plus input-group-quantity-counter-btn" href="javascript:;">
+                                        <i class="tio-add"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Input -->
+                    <div class="w-100"></div>
+                    <!-- End Form -->
+                </div>
+                @Html.HiddenFor(model => model.ScaleHoursModel.ScaleHourID)
+                @Html.HiddenFor(model => model.ScaleHoursModel.EmployeeID)
+                @Html.HiddenFor(model => model.ScaleHoursModel.CreatedOn)
+                @Html.HiddenFor(model => model.ScaleHoursModel.CreatedByUserID)
+                @Html.HiddenFor(model => model.ScaleHoursModel.DeletedOn)
+                @Html.HiddenFor(model => model.ScaleHoursModel.DeletedByUserID)
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a class="btn btn-white" href="@Url.Action("Search", "ScaleHours")">Cancel</a>
+                    <input type="submit" value="Save" class="btn btn-primary ml-2" id="btnSave" />
+                </div>
+                <!-- End Footer -->
+            </div>
+        </form>
+    </div>
+    <!-- End Content Section -->
+</main>
+<!-- ========== END MAIN ========== -->
+@section scripts {
+    <!-- JS Plugins Init. -->
+    <script>
+        $(document).on('ready',
+            function () {
+                $("#form1").validate({
+
+                    errorClass: 'invalid-input'
+                });
+
+                jQuery.validator.addClassRules('costScaleTextBox',
+                    {
+                        required: true,
+                        number: true
+                    });
+
+                jQuery.validator.addClassRules('EmployeeDDL',
+                    {
+                        required: true
+                    });
+            });
+    </script>
+}
